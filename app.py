@@ -11,7 +11,16 @@ def create_main_surface():
     pygame.display.set_mode(screen_size)
 
 def main():
+
+    #game loop
     while True:
+
+        #screen
         create_main_surface()
-        
+
+        #closeable window
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                return
+                
 main()
