@@ -2,37 +2,39 @@ import pygame
 import sys
 from pygame.locals import *
 from pygame.display import flip
+from classes import *
 
 pygame.init()
 screen = pygame.display.set_mode((1024, 768))
+dot = player(100, 100)
+keys = keyboard()
 
-class player:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def draw(self):
-        pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 50)
-
-class keyboard:
-    def __init__(self):
-        self.keys = pygame.key.get_pressed()
-
-    def is_pressed(self, key):
-        return self.keys[key]
-
-def create_main_surface():
-    dot = player(100, 100)
-    render_frame(dot)
+def create_main_surface(player):
+    render_frame(player)
 
 def render_frame(player):
-    player.draw()
+    player.draw(screen)
     flip()
 
-
+def process_input(player):
+    if keys.is_key_down(K_RIGHT):
+        player.x += 100
+    if keys.is_key_down(K_LEFT):
+        player.x -= 100
+    if keys.is_key_down(K_UP):
+        player.y -= 100
+    if keys.is_key_down(K_DOWN):
+        player.y += 100
+    
+    if keys.is_key_down(K_ESCAPE):
+        pygame.quit()
+        sys.exit()
+    
+    
 def main():
     while True:
-        create_main_surface()
+        process_input(dot)
+        create_main_surface(dot)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
