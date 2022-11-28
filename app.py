@@ -13,6 +13,7 @@ def create_main_surface(player):
     render_frame(player)
 
 def render_frame(player):
+    screen.fill((0, 0, 0))
     player.draw(screen)
     flip()
 
@@ -32,7 +33,6 @@ def process_input(player, keys):
         pygame.quit()
         sys.exit()
 
-    return player
         
     
     
