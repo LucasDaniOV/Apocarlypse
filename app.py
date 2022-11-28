@@ -15,17 +15,17 @@ def render_frame(state):
     state.render()
 
 def process_input(state):
-
-    if state.is_key_down(K_LEFT) and state.is_key_down(K_DOWN):
-        state.change_player_pos(-100, -100)
-    elif state.is_key_down(K_LEFT) and state.is_key_down(K_UP):
-        state.change_player_pos(-100, 100)
-    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_DOWN):
-        state.change_player_pos(100, -100)
-    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_UP):
-        state.change_player_pos(100, 100)
+    # Functions weird, needs fixing
+    # if state.is_key_down(K_LEFT) and state.is_key_down(K_DOWN):
+    #     state.change_player_pos(-100, -100)
+    # elif state.is_key_down(K_LEFT) and state.is_key_down(K_UP):
+    #     state.change_player_pos(-100, 100)
+    # elif state.is_key_down(K_RIGHT) and state.is_key_down(K_DOWN):
+    #     state.change_player_pos(100, -100)
+    # elif state.is_key_down(K_RIGHT) and state.is_key_down(K_UP):
+    #     state.change_player_pos(100, 100)
     
-    elif state.is_key_down(K_RIGHT):
+    if state.is_key_down(K_RIGHT):
         state.change_player_pos(100, 0)
     elif state.is_key_down(K_LEFT):
         state.change_player_pos(-100, 0)
@@ -40,7 +40,11 @@ def process_input(state):
 
     
 def main():
-    game = state()
+    # Create the state
+    screendim = (800, 600)
+    # is array to easily grab the x and y values
+    startpos = [400, 300]
+    game = state(screendim, startpos)
     while True:
         game.updateKeys()
         create_main_surface(game)

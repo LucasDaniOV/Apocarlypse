@@ -2,9 +2,9 @@ import pygame
 import sys
 from pygame.locals import *
 class state:
-    def __init__(self):
-        self.__screen = pygame.display.set_mode((800, 600))
-        self.__player = player(100, 100)
+    def __init__(self, screendim, startpos):
+        self.__screen = pygame.display.set_mode(screendim)
+        self.__player = player(startpos[0], startpos[1])
         self.__keys = keyboard()
 
     def render(self):
