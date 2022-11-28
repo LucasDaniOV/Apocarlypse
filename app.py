@@ -8,20 +8,15 @@ from classes import *
 # Initialize Pygame
 pygame.init()
 
-screen = pygame.display.set_mode((800, 600))
+def create_main_surface(state):
+    render_frame(state)
 
-def create_main_surface(player):
-    render_frame(player)
-
-def render_frame(player):
-    screen.fill((0, 0, 0))
-    player.draw(screen)
-    flip()
+def render_frame(state):
+    state.render()
 
 def process_input(player, keys):
 
-    
-    if keys.is_key_down(pygame.K_RIGHT):
+    if keys.is_key_down(K_RIGHT):
         player.x += 100
     if keys.is_key_down(K_LEFT):
         player.x -= 100
@@ -38,12 +33,11 @@ def process_input(player, keys):
     
     
 def main():
-    dot = player(100, 100)
+    game = state()
     while True:
-        keys = keyboard()
-        create_main_surface(dot)
+        create_main_surface(game)
         for event in pygame.event.get():
-            process_input(dot, keys)
+            process_input(game.player, game.keys)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
