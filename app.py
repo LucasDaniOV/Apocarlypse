@@ -16,21 +16,28 @@ def render_frame(state):
 
 def process_input(state):
 
-    if state.is_key_down(K_RIGHT):
-        state.change_player_pos(100, 0)
-    if state.is_key_down(K_LEFT):
-        state.change_player_pos(-100, 0)
-    if state.is_key_down(K_UP):
-        state.change_player_pos(0, -100)
-    if state.is_key_down(K_DOWN):
-        state.change_player_pos(0, 100)
+    if state.is_key_down(K_LEFT) and state.is_key_down(K_DOWN):
+        state.change_player_pos(-100, -100)
+    elif state.is_key_down(K_LEFT) and state.is_key_down(K_UP):
+        state.change_player_pos(-100, 100)
+    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_DOWN):
+        state.change_player_pos(100, -100)
+    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_UP):
+        state.change_player_pos(100, 100)
     
-    if state.is_key_down(K_ESCAPE):
+    elif state.is_key_down(K_RIGHT):
+        state.change_player_pos(100, 0)
+    elif state.is_key_down(K_LEFT):
+        state.change_player_pos(-100, 0)
+    elif state.is_key_down(K_UP):
+        state.change_player_pos(0, -100)
+    elif state.is_key_down(K_DOWN):
+        state.change_player_pos(0, 100)
+
+    elif state.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()
 
-        
-    
     
 def main():
     game = state()
