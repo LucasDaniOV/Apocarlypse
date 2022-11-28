@@ -17,9 +17,13 @@ class player:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.image = pygame.image.load('./images/car.png')
+        # self.rect = self.image.get_rect() | This is for collision detection later on, will be used in the future
 
     def render(self, screen):
-        pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 50)
+        # pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 50)
+        screen.blit(self.image, (self.x, self.y))
+
 
 class keyboard:
     def __init__(self):
