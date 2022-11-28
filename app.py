@@ -14,18 +14,18 @@ def create_main_surface(state):
 def render_frame(state):
     state.render()
 
-def process_input(player, keys):
+def process_input(state):
 
-    if keys.is_key_down(K_RIGHT):
-        player.x += 100
-    if keys.is_key_down(K_LEFT):
-        player.x -= 100
-    if keys.is_key_down(K_UP):
-        player.y -= 100
-    if keys.is_key_down(K_DOWN):
-        player.y += 100
+    if state.keys.is_key_down(K_RIGHT):
+        state.player.x += 100
+    if state.keys.is_key_down(K_LEFT):
+        state.player.x -= 100
+    if state.keys.is_key_down(K_UP):
+        state.player.y -= 100
+    if state.keys.is_key_down(K_DOWN):
+        state.player.y += 100
     
-    if keys.is_key_down(K_ESCAPE):
+    if state.keys.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()
 
@@ -35,9 +35,10 @@ def process_input(player, keys):
 def main():
     game = state()
     while True:
+        game.keys = keyboard()
         create_main_surface(game)
         for event in pygame.event.get():
-            process_input(game.player, game.keys)
+            process_input(game)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
