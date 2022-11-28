@@ -10,6 +10,13 @@ class player:
 
     def draw(self, screen):
         pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 50)
+    
+    def ChangeX(self, x):
+        self.x += x
+    
+    def ChangeY(self, y):
+        self.y += y
+
 
 class keyboard:
     def __init__(self):
