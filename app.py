@@ -8,7 +8,7 @@ from classes import *
 # Initialize Pygame
 pygame.init()
 
-
+screen = pygame.display.set_mode((800, 600))
 
 def create_main_surface(player):
     render_frame(player)
