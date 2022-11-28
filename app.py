@@ -1,11 +1,12 @@
 import pygame
+
 import sys
 from pygame.locals import *
 from pygame.display import flip
 from classes import *
 
+# Initialize Pygame
 pygame.init()
-screen = pygame.display.set_mode((1024, 768))
 
 
 
