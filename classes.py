@@ -1,7 +1,10 @@
 import pygame
 import sys
 from pygame.locals import *
+<<<<<<< HEAD
 
+=======
+>>>>>>> 544d02cb0afc4ed0527c796b1d9f1fb6c77dfd70
 from functions import *
 class state:
     def __init__(self, screendim, startpos, background):
