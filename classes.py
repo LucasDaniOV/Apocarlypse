@@ -25,7 +25,18 @@ class state:
         if is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x, y)):
             self.__player.change_pos(x, y) 
         else:
-            self.__player.change_pos(0, 0)
+            match (x, y):
+                case (x, 0):
+                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x), 0))): 
+                        self.__player.change_pos(x/abs(x), 0)
+                case (0, y):
+                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(0, y/abs(y)))):
+                        self.__player.change_pos(0, y/abs(y))
+                case (x, y):
+                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x, y/abs(y))))):
+                        self.__player.change_pos(x/abs(x), y/abs(y))
+                
+                
              
         
     
@@ -35,11 +46,11 @@ class player:
         self.__x = x
         self.__y = y
         self.__image = pygame.image.load('./images/car.png')
-        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)) #| This is for collision detection later on, will be used in the future
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
-        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1)
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
     
     
     def change_pos(self, x, y):
