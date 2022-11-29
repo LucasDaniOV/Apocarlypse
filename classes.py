@@ -1,10 +1,6 @@
 import pygame
 import sys
 from pygame.locals import *
-<<<<<<< HEAD
-
-=======
->>>>>>> 544d02cb0afc4ed0527c796b1d9f1fb6c77dfd70
 from functions import *
 class state:
     def __init__(self, screendim, startpos, background):
@@ -52,7 +48,7 @@ class player:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
-        self.__image = pygame.image.load('./images/car.webp')
+        self.__image = pygame.image.load('./images/car.png')
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
         self.__image = pygame.transform.scale(self.__image, (200, 300))
