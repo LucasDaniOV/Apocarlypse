@@ -11,6 +11,7 @@ class state:
     def render(self):
         self.__screen.fill((0, 0, 0))
         self.__player.render(self.__screen)
+        pygame.draw.rect(self.__screen, (0, 255, 0), self.__screen.get_rect(), 1) # border for debugging
         pygame.display.flip()
     
     def updateKeys(self):
@@ -20,8 +21,6 @@ class state:
         return self.__keys.is_key_down(key)
     
     def change_player_pos(self, x, y):
-        # if  self.__screen.get_width() > self.__player.get_x() + x > 0:
-        #     if self.__screen.get_height() > self.__player.get_y() + y > 0:
         if is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x, y)):
             self.__player.change_pos(x, y) 
         else:
