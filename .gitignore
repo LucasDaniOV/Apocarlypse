@@ -188,14 +188,3 @@ poetry.toml
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
-
-*.jpg
-*.jpeg
-*.png
-*.wav
-*.mp3
-*.ogg
-*.midi
-*.zip
-*.7z
-*.rar

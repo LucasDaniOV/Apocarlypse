@@ -62,7 +62,7 @@ def main():
                 sys.exit()
 
         time_elapsed = pygame.time.get_ticks() - start_time
-        game.update_background(time_elapsed/100)
+        game.update_background(time_elapsed/1000)
 
 if __name__ == '__main__':
     main()
