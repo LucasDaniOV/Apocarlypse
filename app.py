@@ -42,9 +42,9 @@ def process_input(state, step):
 
 def main():
     # Create the state
-    screendim = (800, 600)
+    screendim = (800, 800)
     # is array to easily grab the x and y values
-    startpos = [400, 300]
+    startpos = [400, 400]
 
     y = 0
     game = state(screendim, startpos, Background("./images/highway.png", y))

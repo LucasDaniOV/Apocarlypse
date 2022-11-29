@@ -89,7 +89,7 @@ class keyboard:
 class Background:
     def __init__(self, image_file, y=0):
         self.__image = pygame.image.load(image_file)
-        self.__image = pygame.transform.scale(self.__image, (800, 600))
+        self.__image = pygame.transform.scale(self.__image, (800, 800))
         self.__y = y
 
     def render(self, screen):
