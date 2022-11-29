@@ -8,11 +8,12 @@ class state:
         self.__player = player(startpos[0], startpos[1])
         self.__keys = keyboard()
         self.__background = background
-        self.__mine = mine
+        self.__mines = []
 
     def render(self):
         self.__background.render(self.__screen)
-        self.__mine.render(self.__screen)
+        for mine in self.__mines:
+            mine.render(self.__screen)
         self.__player.render(self.__screen)
         pygame.draw.rect(self.__screen, (0, 255, 0), self.__screen.get_rect(), 1) # border for debugging
         pygame.display.flip()
@@ -39,9 +40,16 @@ class state:
                         self.__player.change_pos(x/abs(x), y/abs(y))
     def update_background(self, a):
         self.__background.update(a) 
+    
+    def create_mine(self, mine):
+        self.__mines.append(mine)
+
+    def get_mines_len(self):
+        return len(self.__mines)
 
     def update_mine(self, x, y):
-        self.__mine.change_pos(x, y)
+        for mine in self.__mines:
+            mine.change_pos(x, y)
 
 class player:
     def __init__(self, x, y):
@@ -104,12 +112,13 @@ class Mine:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
-        self.__image = pygame.image.load('./images/mine.webp')
+        self.__image = pygame.image.load('./images/rock.png')
         self.__image = pygame.transform.scale(self.__image, (100, 100))
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
+        self.__image = pygame.transform.scale(self.__image, (100, 100))
         pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
 
     def get_rect(self):
