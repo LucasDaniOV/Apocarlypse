@@ -8,10 +8,12 @@ class state:
         self.__player = player(startpos[0], startpos[1])
         self.__keys = keyboard()
         self.__background = background
+        self.__mine = Mine(100, 100)
 
     def render(self):
         self.__background.render(self.__screen)
         self.__player.render(self.__screen)
+        self.__mine.render(self.__screen)
         pygame.draw.rect(self.__screen, (0, 255, 0), self.__screen.get_rect(), 1) # border for debugging
         pygame.display.flip()
     
@@ -35,12 +37,6 @@ class state:
                 case (x, y):
                     while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x), y/abs(y)))):
                         self.__player.change_pos(x/abs(x), y/abs(y))
-                
-                
-             
-        
-    
-
     def update_background(self, a):
         self.__background.update(a) 
 
@@ -100,3 +96,24 @@ class Background:
         self.__y += a
         if self.__y > self.__image.get_height():
             self.__y = 0
+
+class Mine:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+        self.__image = pygame.image.load('./images/mine.webp')
+        self.__image = pygame.transform.scale(self.__image, (100, 100))
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+
+    def render(self, screen):
+        screen.blit(self.__image, (self.__x, self.__y))
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+
+    def get_rect(self):
+        return self.__rect
+
+    def get_x(self):
+        return self.__x
+
+    def get_y(self):
+        return self.__y
