@@ -47,7 +47,7 @@ def main():
     startpos = [400, 400]
 
     y = 0
-    game = state(screendim, startpos, Background("./images/highway.png", y))
+    game = state(screendim, startpos, Background("./images/highway.png", y), Mine(300, 0))
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
     speed = 5
@@ -64,6 +64,7 @@ def main():
 
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
+        game.update_mine(0, speed)
 
 if __name__ == '__main__':
     main()

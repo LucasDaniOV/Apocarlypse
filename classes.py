@@ -3,12 +3,12 @@ import sys
 from pygame.locals import *
 from functions import *
 class state:
-    def __init__(self, screendim, startpos, background):
+    def __init__(self, screendim, startpos, background, mine):
         self.__screen = pygame.display.set_mode(screendim)
         self.__player = player(startpos[0], startpos[1])
         self.__keys = keyboard()
         self.__background = background
-        self.__mine = Mine(100, 100)
+        self.__mine = mine
 
     def render(self):
         self.__background.render(self.__screen)
@@ -39,6 +39,9 @@ class state:
                         self.__player.change_pos(x/abs(x), y/abs(y))
     def update_background(self, a):
         self.__background.update(a) 
+
+    def update_mine(self, x, y):
+        self.__mine.change_pos(x, y)
 
 class player:
     def __init__(self, x, y):
@@ -117,3 +120,8 @@ class Mine:
 
     def get_y(self):
         return self.__y
+
+    def change_pos(self, x, y):
+        self.__x += x
+        self.__y += y
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
