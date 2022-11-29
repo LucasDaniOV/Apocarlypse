@@ -1,6 +1,7 @@
 import pygame
 import sys
 from pygame.locals import *
+
 class state:
     def __init__(self, screendim, startpos, background):
         self.__screen = pygame.display.set_mode(screendim)
@@ -21,6 +22,9 @@ class state:
     
     def change_player_pos(self, x, y):
         self.__player.change_pos(x, y)
+
+    def update_background(self, a):
+        self.__background.update(a)
 
 class player:
     def __init__(self, x, y):
@@ -51,8 +55,16 @@ class keyboard:
         self.__keys = pygame.key.get_pressed()
 
 class Background:
-    def __init__(self, image_file):
+    def __init__(self, image_file, y=0):
         self.__image = pygame.image.load(image_file)
+        self.__image = pygame.transform.scale(self.__image, (800, 600))
+        self.__y = y
 
     def render(self, screen):
-        screen.blit(self.__image, (0, 0))
+        screen.blit(self.__image, (0, self.__y))
+        screen.blit(self.__image, (0, self.__y - self.__image.get_height()))
+
+    def update(self, a):
+        self.__y += a
+        if self.__y > self.__image.get_height():
+            self.__y = 0

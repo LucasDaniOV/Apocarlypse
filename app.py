@@ -38,13 +38,16 @@ def process_input(state):
         pygame.quit()
         sys.exit()
 
-    
+
 def main():
     # Create the state
     screendim = (800, 600)
     # is array to easily grab the x and y values
     startpos = [400, 300]
-    game = state(screendim, startpos, Background("./images/highway.png"))
+
+    y = 0
+    game = state(screendim, startpos, Background("./images/highway.png", y))
+
     while True:
         game.updateKeys()
         create_main_surface(game)
@@ -53,6 +56,8 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+
+        game.update_background(10)
         
 
 
