@@ -12,8 +12,8 @@ class state:
 
     def render(self):
         self.__background.render(self.__screen)
-        self.__player.render(self.__screen)
         self.__mine.render(self.__screen)
+        self.__player.render(self.__screen)
         pygame.draw.rect(self.__screen, (0, 255, 0), self.__screen.get_rect(), 1) # border for debugging
         pygame.display.flip()
     

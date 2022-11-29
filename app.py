@@ -50,6 +50,7 @@ def main():
     game = state(screendim, startpos, Background("./images/highway.png", y))
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
+    speed = 5
 
     while True:
         clock.tick(60)
@@ -62,7 +63,7 @@ def main():
                 sys.exit()
 
         time_elapsed = pygame.time.get_ticks() - start_time
-        game.update_background(time_elapsed/1000)
+        game.update_background(speed)
 
 if __name__ == '__main__':
     main()
