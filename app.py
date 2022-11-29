@@ -44,7 +44,7 @@ def main():
     screendim = (800, 600)
     # is array to easily grab the x and y values
     startpos = [400, 300]
-    game = state(screendim, startpos)
+    game = state(screendim, startpos, Background("./images/highway.png"))
     while True:
         game.updateKeys()
         create_main_surface(game)

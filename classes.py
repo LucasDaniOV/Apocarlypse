@@ -2,13 +2,14 @@ import pygame
 import sys
 from pygame.locals import *
 class state:
-    def __init__(self, screendim, startpos):
+    def __init__(self, screendim, startpos, background):
         self.__screen = pygame.display.set_mode(screendim)
         self.__player = player(startpos[0], startpos[1])
         self.__keys = keyboard()
+        self.__background = background
 
     def render(self):
-        self.__screen.fill((0, 0, 0))
+        self.__background.render(self.__screen)
         self.__player.render(self.__screen)
         pygame.display.flip()
     
@@ -48,4 +49,10 @@ class keyboard:
         
     def update(self):
         self.__keys = pygame.key.get_pressed()
-    
+
+class Background:
+    def __init__(self, image_file):
+        self.__image = pygame.image.load(image_file)
+
+    def render(self, screen):
+        screen.blit(self.__image, (0, 0))
