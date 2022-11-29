@@ -1,11 +1,7 @@
 import pygame
 import sys
 from pygame.locals import *
-<<<<<<< HEAD
-
-=======
 from functions import *
->>>>>>> c3ce5383a61f0f358d68dbb83d7b048446ebfc67
 class state:
     def __init__(self, screendim, startpos, background):
         self.__screen = pygame.display.set_mode(screendim)
