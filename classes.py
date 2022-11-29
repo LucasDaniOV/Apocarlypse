@@ -24,7 +24,7 @@ class state:
         self.__player.change_pos(x, y)
 
     def update_background(self, a):
-        self.__background.update(a)
+        self.__background.update(a) 
 
 class player:
     def __init__(self, x, y):

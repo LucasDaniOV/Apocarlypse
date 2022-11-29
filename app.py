@@ -47,8 +47,11 @@ def main():
 
     y = 0
     game = state(screendim, startpos, Background("./images/highway.png", y))
+    clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()
 
     while True:
+        clock.tick(60)
         game.updateKeys()
         create_main_surface(game)
         for event in pygame.event.get():
@@ -57,11 +60,8 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        game.update_background(10)
-        
-
+        time_elapsed = pygame.time.get_ticks() - start_time
+        game.update_background(time_elapsed/100)
 
 if __name__ == '__main__':
     main()
-
-
