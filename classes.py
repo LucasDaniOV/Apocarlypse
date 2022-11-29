@@ -33,7 +33,7 @@ class state:
                     while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(0, y/abs(y)))):
                         self.__player.change_pos(0, y/abs(y))
                 case (x, y):
-                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x, y/abs(y))))):
+                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x), y/abs(y)))):
                         self.__player.change_pos(x/abs(x), y/abs(y))
                 
                 
