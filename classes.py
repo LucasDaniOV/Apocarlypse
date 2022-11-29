@@ -25,8 +25,10 @@ class player:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
-        self.__image = pygame.image.load('./images/car.png')
+        self.__image = pygame.image.load('./images/car.webp')
         # self.rect = self.image.get_rect() | This is for collision detection later on, will be used in the future
+
+        self.__image = pygame.transform.scale(self.__image, (200, 300))
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
