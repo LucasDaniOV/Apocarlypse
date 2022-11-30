@@ -14,12 +14,17 @@ class state:
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
         self.__bottomScreen  = self.__screen.get_rect().inflate(0, -799).move(0, 390)
         self.__pause = False
+        self.__bullets = []
 
     def render(self):
         if self.__pause == False:
             self.__background.render(self.__screen)
             for mine in self.__mines:
                 mine.render(self.__screen)
+
+            for bullet in self.__bullets:
+                bullet.render(self.__screen)
+
             self.__player.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
@@ -82,6 +87,10 @@ class state:
     
     def explode_mine(self, mine):
         mine.explode()
+
+    def create_bullet(self, bullet):
+        if self.__pause == False:
+            self.__bullets.append(bullet)
 
 class player:
     def __init__(self, x, y):
@@ -181,3 +190,12 @@ class Mine:
     def reset_mine(self):
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
+
+class Bullet:
+    
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+
+    def render(self, screen):
+        pygame.draw.rect(screen, (255, 255, 0), (self.__x, self.__y, 3, 10))

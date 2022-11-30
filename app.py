@@ -53,6 +53,10 @@ def process_input(state, step):
     # Pause and unpause when p is pressed
     elif state.is_key_down(K_p):
         state.pause()
+
+    #bullets
+    elif state.is_key_down(K_SPACE):
+        state.create_bullet(Bullet(state.get_player().get_x(), state.get_player().get_y()))
     
     
 
