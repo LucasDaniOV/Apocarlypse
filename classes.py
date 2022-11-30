@@ -58,7 +58,7 @@ class player:
         self.__image = pygame.image.load('./images/car.png')
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
-        self.__image = pygame.transform.scale(self.__image, (200, 300))
+        #self.__image = pygame.transform.scale(self.__image, (200, 300))
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
@@ -79,7 +79,6 @@ class player:
     
     def get_rect(self):
         return self.__rect
-
 
 
 class keyboard:

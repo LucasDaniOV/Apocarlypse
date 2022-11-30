@@ -13,8 +13,9 @@ pygame.init()
 def create_main_surface(state):
     #create a new mine with a random x value and y value of 1 
     #has a 5% chance of spawning a mine
+
     if random.randint(1, 500) <= 2:
-        state.create_mine(Mine(random.randint(0, 800), -100))
+        state.create_mine(Mine(random.randint(120, 580), -100))
     
     render_frame(state)
 
