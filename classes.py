@@ -3,6 +3,7 @@ import sys
 from pygame.locals import *
 from functions import *
 import time
+from functions import is_inside
 from soundtest import *
 
 class state:
@@ -67,6 +68,7 @@ class state:
                     case (x, y):
                         while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), y/abs(y)))):
                             self.__player.change_pos(x/abs(x), y/abs(y))
+
     def update_background(self, a):
         if self.__pause == False:
             self.__background.update(a) 
@@ -107,10 +109,11 @@ class state:
     def create_bullet(self, bullet):
         if self.__pause == False:
             self.__bullets.append(bullet)
+
             for check in self.__bullets:
                 if not check == bullet:
-                    if touches(check.get_rect(), bullet.get_rect()):
-                        self.__bullets.remove(check)
+                    if touches(bullet.get_rect().inflate(5,50), check.get_rect().inflate(0,50)):
+                        del self.__bullets[len(self.__bullets)-1]
                 
     
     def get_bullets(self):
@@ -164,11 +167,12 @@ class player:
         self.__image = pygame.image.load('./images/small-minigun-car.png')
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
-        #self.__image = pygame.transform.scale(self.__image, (200, 300))
+        self.__image = pygame.transform.scale(self.__image, (200, 300))
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
         pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        self.__image = pygame.transform.scale(self.__image, (80, 160))
     
     
     def change_pos(self, x, y):
@@ -258,7 +262,7 @@ class Mine:
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
 
-class Bullet:
+class bullet:
     
     def __init__(self, x, y):
         self.__x = x

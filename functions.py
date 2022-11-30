@@ -4,6 +4,8 @@ import sys
 from pygame.locals import *
 from pygame.display import flip
 from classes import *
+import random
+
 
 # Contains helper functions
 
@@ -37,7 +39,7 @@ def checkGuys(game):
     for guy in guys:
         for bullet in bullets:
             if touches(bullet.get_rect(), guy.get_rect()):
-                game.change_guy_health(guy, -1)
+                game.change_guy_health(guy, -10)
                 game.remove_bullet(bullet)
         if touches(player.get_rect(), guy.get_rect()):
             game.remove_guy(guy)
@@ -55,3 +57,5 @@ def checkBullets(state):
     for bullet in bullets:
         if touches(bullet.get_rect(), state.get_topScreen()):
             state.remove_bullet(bullet)
+
+

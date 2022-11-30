@@ -17,12 +17,12 @@ def create_main_surface(state):
     #create a new mine with a random x value and y value of 1 
     #has a 5% chance of spawning a mine
 
-    if random.randint(1, 500) <= 2:
+    if random.randint(1, 1000) <= 5:
         state.create_mine(Mine(random.randint(120, 580), -100))
 
     #create a new guy with a random x value and y value of 1
     #has a 5% chance of spawning a guy
-    if random.randint(1, 50) <= 2:
+    if random.randint(1, 1000) <= 5:
         state.create_guy(guy(random.randint(120, 580), -100))
     
     render_frame(state)
@@ -31,10 +31,23 @@ def render_frame(state):
     state.render()
 
 def process_input(state, step):
-
+    bulletspread = [-20, 30]
     # Pause and unpause when p is pressed
     if state.is_key_down(K_p):
         state.pause()
+    
+    # Move and shoot at the same time
+    elif state.is_key_down(K_LEFT) and state.is_key_down(K_SPACE):
+        state.change_player_pos(-step, 0)
+        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_SPACE):
+        state.change_player_pos(step, 0)
+        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    
     # Don't move if opposite keys are pressed
     elif state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
         state.change_player_pos(0, 0)
@@ -55,7 +68,7 @@ def process_input(state, step):
     elif state.is_key_down(K_RIGHT):
         state.change_player_pos(step, 0)
     elif state.is_key_down(K_LEFT):
-        state.change_player_pos(-step, 0)
+        state.change_player_pos(-step, 0)  
     elif state.is_key_down(K_UP):
         state.change_player_pos(0, -step)
     elif state.is_key_down(K_DOWN):
@@ -67,9 +80,9 @@ def process_input(state, step):
 
     #bullets
     elif state.is_key_down(K_SPACE):
-        state.create_bullet(Bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(-10, 5)))
-        state.create_bullet(Bullet(state.get_player().get_x() + 47, state.get_player().get_y() + random.randint(-5, 10)))
-        state.create_bullet(Bullet(state.get_player().get_x() + 54, state.get_player().get_y() + random.randint(-10, 5)))
+        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
     
 
     
@@ -115,7 +128,7 @@ def main():
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
         game.update_mine(0, speed)
-        game.update_bullets(0, -25)
+        game.update_bullets(0, -10)
         game.update_guys(0, speed)
 
         checkMines(game)
