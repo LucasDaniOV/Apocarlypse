@@ -65,7 +65,7 @@ def main():
     # Create the state
     screendim = (800, 800)
     # is array to easily grab the x and y values
-    startpos = [360, 600]
+    startpos = [360, 550]
 
     y = 0
     mine = Mine(300, 0)
