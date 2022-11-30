@@ -62,8 +62,7 @@ class state:
         
     def remove_mine(self, mine):
         mine.explode()
-
-        #self.__mines.remove(mine)
+        self.__mines.remove(mine)
 
 class player:
     def __init__(self, x, y):
@@ -158,6 +157,7 @@ class Mine:
     def explode(self):
         self.__image = pygame.image.load('./images/explosion.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
+        self.__exploded = True
 
     def reset_mine(self):
         self.__image = pygame.image.load('./images/mine.png')
