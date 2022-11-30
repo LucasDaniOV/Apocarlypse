@@ -87,6 +87,9 @@ class state:
     
     def change_health(self, x):
         self.__health.change_health(x)
+    
+    def get_health(self):
+        return self.__health.get_health()
 
 class player:
     def __init__(self, x, y):

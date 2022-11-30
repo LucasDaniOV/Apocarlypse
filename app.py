@@ -84,6 +84,11 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+        if game.get_health() <= 0:    
+            time.sleep(5)
+            pygame.quit()
+            sys.exit()
+
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
         game.update_mine(0, speed)
