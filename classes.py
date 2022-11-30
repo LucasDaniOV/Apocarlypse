@@ -14,6 +14,7 @@ class state:
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
         self.__bottomScreen  = self.__screen.get_rect().inflate(0, -799).move(0, 390)
         self.__pause = False
+        self.__health = health()
 
     def render(self):
         if self.__pause == False:
@@ -21,6 +22,7 @@ class state:
             for mine in self.__mines:
                 mine.render(self.__screen)
             self.__player.render(self.__screen)
+            self.__health.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
             pygame.display.flip()
@@ -82,6 +84,9 @@ class state:
     
     def explode_mine(self, mine):
         mine.explode()
+    
+    def change_health(self, x):
+        self.__health.change_health(x)
 
 class player:
     def __init__(self, x, y):
@@ -181,3 +186,23 @@ class Mine:
     def reset_mine(self):
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
+
+class health:
+    def __init__(self):
+        self.__health = 200
+        self.__rect = pygame.Rect(10, 10, self.__health, 25)
+
+    def render(self, screen):
+        if self.__health > 100:
+            self.__rect = pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
+        elif self.__health <= 100 and self.__health > 50:
+            self.__rect = pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
+        elif self.__health <= 50:
+            self.__rect = pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
+
+    def get_health(self):
+        return self.__health
+    
+    def change_health(self, x):
+        self.__health += x
+        self.__rect = pygame.Rect(10, 10, self.__health, 25)

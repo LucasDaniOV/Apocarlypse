@@ -95,9 +95,12 @@ def main():
 
         for mine in mines:
             if not mine.get_exploded():
-                if touches(player.get_rect(), mine.get_rect()) or touches (mine.get_rect(), game.get_bottomScreen()):
+                if touches(player.get_rect(), mine.get_rect()):
                     mine.explode()
-                
+                    game.change_health(-20)
+
+                if touches (mine.get_rect(), game.get_bottomScreen()):
+                    game.remove_mine(mine)  
                 
             if mine.get_exploded():
                 if touches (mine.get_rect(), game.get_bottomScreen()):
