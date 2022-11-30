@@ -24,8 +24,11 @@ def render_frame(state):
 
 def process_input(state, step):
 
+    # Pause and unpause when p is pressed
+    if state.is_key_down(K_p):
+        state.pause()
     # Don't move if opposite keys are pressed
-    if state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
+    elif state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
         state.change_player_pos(0, 0)
     elif state.is_key_down(K_UP) and state.is_key_down(K_DOWN):
         state.change_player_pos(0, 0)
@@ -49,10 +52,6 @@ def process_input(state, step):
         state.change_player_pos(0, -step)
     elif state.is_key_down(K_DOWN):
         state.change_player_pos(0, step)
-    
-    # Pause and unpause when p is pressed
-    elif state.is_key_down(K_p):
-        state.pause()
     
     
 
