@@ -93,7 +93,7 @@ def main():
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
         game.update_mine(0, speed)
-        game.update_bullets(0, - speed*5 )
+        game.update_bullets(0, -25 )
 
 
         mines = game.get_mines()
