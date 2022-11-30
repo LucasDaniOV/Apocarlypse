@@ -29,6 +29,7 @@ def process_input(state, step):
         state.change_player_pos(0, 0)
     elif state.is_key_down(K_UP) and state.is_key_down(K_DOWN):
         state.change_player_pos(0, 0)
+
     # Diagonal
     elif state.is_key_down(K_LEFT) and state.is_key_down(K_DOWN):
         state.change_player_pos(-step, step)
@@ -38,6 +39,7 @@ def process_input(state, step):
         state.change_player_pos(step, step)
     elif state.is_key_down(K_RIGHT) and state.is_key_down(K_UP):
         state.change_player_pos(step, -step)
+        
     # Axis
     elif state.is_key_down(K_RIGHT):
         state.change_player_pos(step, 0)
