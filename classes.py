@@ -12,7 +12,8 @@ class state:
         self.__background = background
         self.__mines = []
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
-        self.__bottomScreen  = self.__screen.get_rect().inflate(0, -799).move(0, 390)
+        self.__bottomScreen  = self.__screen.get_rect().inflate(0, -790).move(0, 390)
+        self.__topScreen = self.__screen.get_rect().inflate(0, -790).move(0, -350)
         self.__pause = False
         self.__bullets = []
         self.__health = health()
@@ -31,6 +32,7 @@ class state:
             self.__health.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
+            pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
     def pause(self):
@@ -100,11 +102,25 @@ class state:
     def create_bullet(self, bullet):
         if self.__pause == False:
             self.__bullets.append(bullet)
+            for check in self.__bullets:
+                if not check == bullet:
+                    if touches(check.get_rect(), bullet.get_rect()):
+                        self.__bullets.remove(check)
+                
+    
+    def get_bullets(self):
+        return self.__bullets
+    
+    def remove_bullet(self, bullet):
+        self.__bullets.remove(bullet)
     
     def update_bullets(self, x, y):
         if self.__pause == False:
             for bullet in self.__bullets:
                 bullet.change_pos(x, y)
+
+    def get_topScreen(self):
+        return self.__topScreen
 
 class player:
     def __init__(self, x, y):
@@ -217,6 +233,10 @@ class Bullet:
     def change_pos(self, x, y):
         self.__x += x
         self.__y += y
+
+    def get_rect(self):
+        return pygame.Rect(self.__x, self.__y, 3, 10)
+        
 class health:
     def __init__(self):
         self.__health = 200

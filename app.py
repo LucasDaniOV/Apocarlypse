@@ -59,9 +59,9 @@ def process_input(state, step):
 
     #bullets
     elif state.is_key_down(K_SPACE):
-        state.create_bullet(Bullet(state.get_player().get_x() + 40, state.get_player().get_y()))
-        state.create_bullet(Bullet(state.get_player().get_x() + 47, state.get_player().get_y()))
-        state.create_bullet(Bullet(state.get_player().get_x() + 54, state.get_player().get_y()))
+        state.create_bullet(Bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(-10, 5)))
+        state.create_bullet(Bullet(state.get_player().get_x() + 47, state.get_player().get_y() + random.randint(-5, 10)))
+        state.create_bullet(Bullet(state.get_player().get_x() + 54, state.get_player().get_y() + random.randint(-10, 5)))
     
 
     
@@ -104,22 +104,8 @@ def main():
         game.update_mine(0, speed)
         game.update_bullets(0, -25 )
 
-
-        mines = game.get_mines()
-        player = game.get_player()
-
-        for mine in mines:
-            if not mine.get_exploded():
-                if touches(player.get_rect(), mine.get_rect()):
-                    mine.explode()
-                    game.change_health(-20)
-
-                if touches (mine.get_rect(), game.get_bottomScreen()):
-                    game.remove_mine(mine)  
-                
-            if mine.get_exploded():
-                if touches (mine.get_rect(), game.get_bottomScreen()):
-                    game.remove_mine(mine)
+        checkMines(game)
+        checkBullets(game)
 
 if __name__ == '__main__':
     main()
