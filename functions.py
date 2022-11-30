@@ -4,6 +4,7 @@ import sys
 from pygame.locals import *
 from pygame.display import flip
 from classes import *
+from soundtest import *
 
 # Contains helper functions
 

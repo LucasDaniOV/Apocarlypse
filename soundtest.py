@@ -11,6 +11,9 @@ pygame.mixer.init()
 pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
 # pygame.mixer.music.play()
 
+def is_explosion(filename): 
+    return "explosion" in filename
+
 class sound_library:
     def __init__(self, path):
         self.sounds=[]
@@ -69,6 +72,8 @@ class sound_library:
         for (path, ID) in zip(self.find_audio_files(),self.derive_id()):
             table[ID]=path
         return table
+
+    
     
     def play_random_explosion(self):
         res = []
@@ -83,8 +88,7 @@ class sound_library:
                     res.append(os.path.join(root, file))
 
         res = [e.replace("\\", "/") for e in res]
-        index = res.index('./sounds/sfx/explosion1.wav')
-        res = res[index:]
+        res = list(filter(is_explosion, res))
         print(res)
         random_index = random.randint(0, len(res)-1)
         
