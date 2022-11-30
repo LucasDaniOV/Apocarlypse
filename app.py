@@ -56,8 +56,9 @@ def process_input(state, step):
 
     #bullets
     elif state.is_key_down(K_SPACE):
-        state.create_bullet(Bullet(state.get_player().get_x(), state.get_player().get_y()))
-    
+        state.create_bullet(Bullet(state.get_player().get_x() + 40, state.get_player().get_y()))
+        state.create_bullet(Bullet(state.get_player().get_x() + 47, state.get_player().get_y()))
+        state.create_bullet(Bullet(state.get_player().get_x() + 54, state.get_player().get_y()))
     
 
     elif state.is_key_down(K_ESCAPE):
