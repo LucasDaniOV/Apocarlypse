@@ -48,6 +48,12 @@ class state:
     def get_mines_len(self):
         return len(self.__mines)
 
+    def get_mines(self):
+        return self.__mines
+
+    def get_player(self):
+        return self.__player
+
     def update_mine(self, x, y):
         for mine in self.__mines:
             mine.change_pos(x, y)

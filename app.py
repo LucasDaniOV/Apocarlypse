@@ -83,6 +83,17 @@ def main():
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
         game.update_mine(0, speed)
+        process_collision(game)
+
+
+def process_collision(state):
+    mines = state.get_mines()
+    player = state.get_player()
+    for mine in mines:
+        if is_inside(player.get_rect(), mine.get_rect()):
+            print("Collision!")
+            pygame.quit()
+            sys.exit()
 
 if __name__ == '__main__':
     main()
