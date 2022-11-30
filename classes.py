@@ -128,6 +128,7 @@ class Mine:
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (100, 100))
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+        self.__exploded = False
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
@@ -143,6 +144,9 @@ class Mine:
     def get_y(self):
         return self.__y
 
+    def get_exploded(self):
+        return self.__exploded
+
     def change_pos(self, x, y):
         if self.__y > 800:
             self.__y = -100
@@ -152,6 +156,9 @@ class Mine:
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
     def explode(self):
-        image = pygame.image.load('./images/explosion.png')
-        image = pygame.transform.scale(image, (100, 100))
-        self.__image = image
+        self.__image = pygame.image.load('./images/explosion.png')
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
+
+    def reset_mine(self):
+        self.__image = pygame.image.load('./images/mine.png')
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
