@@ -74,7 +74,7 @@ def process_input(state, step):
 
 
 def main():
-    pygame.mixer.music.play()
+    pygame.mixer.music.play(loops = -1)
     # Create the state
     screendim = (800, 800)
     # is array to easily grab the x and y values
