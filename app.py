@@ -6,10 +6,12 @@ from pygame.display import flip
 from classes import *
 from functions import *
 import random
-import soundtest
+from soundtest import *
+import time
 
 # Initialize Pygame
 pygame.init()
+
 
 def create_main_surface(state):
     #create a new mine with a random x value and y value of 1 
@@ -63,6 +65,7 @@ def process_input(state, step):
 
 
 def main():
+    pygame.mixer.music.play()
     # Create the state
     screendim = (800, 800)
     # is array to easily grab the x and y values
@@ -78,6 +81,10 @@ def main():
 
     while True:
         clock.tick(60)
+        a = 0
+        a = pygame.mixer.music.get_pos()
+        if a > 195000:
+            pygame.mixer.music.rewind()
         game.updateKeys()
         create_main_surface(game)
         for event in pygame.event.get():

@@ -8,7 +8,7 @@ import random
 
 pygame.mixer.init()
 
-# pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
+pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
 # pygame.mixer.music.play()
 
 class sound_library:
@@ -99,4 +99,4 @@ class sound_library:
 # expl1.playsound("sfx/explosion1")
 # expl1.play_random_explosion()
 
-time.sleep(1)
+# time.sleep(1)

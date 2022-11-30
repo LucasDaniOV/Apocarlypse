@@ -3,6 +3,7 @@ import sys
 from pygame.locals import *
 from functions import *
 import time
+from soundtest import *
 
 class state:
     def __init__(self, screendim, startpos, background, mine):
@@ -174,6 +175,8 @@ class Mine:
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
     def explode(self):
+        expl1 = sound_library(r"./sounds")
+        expl1.play_random_explosion()
         self.__image = pygame.image.load('./images/explosion.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
         self.__exploded = True
