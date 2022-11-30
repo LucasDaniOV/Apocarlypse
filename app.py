@@ -5,11 +5,17 @@ from pygame.locals import *
 from pygame.display import flip
 from classes import *
 from functions import *
+import random
 
 # Initialize Pygame
 pygame.init()
 
 def create_main_surface(state):
+    #create a new mine with a random x value and y value of 1 
+    #has a 5% chance of spawning a mine
+    if random.randint(1, 500) <= 2:
+        state.create_mine(Mine(random.randint(0, 800), -100))
+    
     render_frame(state)
 
 def render_frame(state):
