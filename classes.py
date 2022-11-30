@@ -15,6 +15,7 @@ class state:
         self.__bottomScreen  = self.__screen.get_rect().inflate(0, -799).move(0, 390)
         self.__pause = False
         self.__bullets = []
+        self.__health = health()
 
     def render(self):
         if self.__pause == False:
@@ -26,6 +27,8 @@ class state:
                 bullet.render(self.__screen)
 
             self.__player.render(self.__screen)
+            self.__health.grey_render(self.__screen)
+            self.__health.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
             pygame.display.flip()
@@ -87,6 +90,12 @@ class state:
     
     def explode_mine(self, mine):
         mine.explode()
+    
+    def change_health(self, x):
+        self.__health.change_health(x)
+    
+    def get_health(self):
+        return self.__health.get_health()
 
     def create_bullet(self, bullet):
         if self.__pause == False:
@@ -208,3 +217,25 @@ class Bullet:
     def change_pos(self, x, y):
         self.__x += x
         self.__y += y
+class health:
+    def __init__(self):
+        self.__health = 200
+        self.__rect = pygame.Rect(10, 10, self.__health, 25)
+        self.__bar = pygame.Rect(10, 10, 200, 25)
+
+    def render(self, screen):
+        if self.__health > 100:
+            self.__rect = pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
+        elif self.__health <= 100 and self.__health > 50:
+            self.__rect = pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
+        elif self.__health <= 50:
+            self.__rect = pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
+    def grey_render(self, screen):
+        self.__bar = pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
+
+    def get_health(self):
+        return self.__health
+    
+    def change_health(self, x):
+        self.__health += x
+        self.__rect = pygame.Rect(10, 10, self.__health, 25)

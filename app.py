@@ -24,8 +24,11 @@ def render_frame(state):
 
 def process_input(state, step):
 
+    # Pause and unpause when p is pressed
+    if state.is_key_down(K_p):
+        state.pause()
     # Don't move if opposite keys are pressed
-    if state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
+    elif state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
         state.change_player_pos(0, 0)
     elif state.is_key_down(K_UP) and state.is_key_down(K_DOWN):
         state.change_player_pos(0, 0)
@@ -61,6 +64,7 @@ def process_input(state, step):
         state.create_bullet(Bullet(state.get_player().get_x() + 54, state.get_player().get_y()))
     
 
+    
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()
@@ -90,6 +94,11 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+        if game.get_health() <= 0:    
+            time.sleep(5)
+            pygame.quit()
+            sys.exit()
+
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
         game.update_mine(0, speed)
@@ -101,9 +110,12 @@ def main():
 
         for mine in mines:
             if not mine.get_exploded():
-                if touches(player.get_rect(), mine.get_rect()) or touches (mine.get_rect(), game.get_bottomScreen()):
+                if touches(player.get_rect(), mine.get_rect()):
                     mine.explode()
-                
+                    game.change_health(-20)
+
+                if touches (mine.get_rect(), game.get_bottomScreen()):
+                    game.remove_mine(mine)  
                 
             if mine.get_exploded():
                 if touches (mine.get_rect(), game.get_bottomScreen()):
