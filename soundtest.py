@@ -8,7 +8,7 @@ import random
 
 pygame.mixer.init()
 
-pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
+# pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
 # pygame.mixer.music.play()
 
 class sound_library:

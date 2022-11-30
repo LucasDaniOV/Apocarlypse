@@ -19,6 +19,11 @@ def create_main_surface(state):
 
     if random.randint(1, 500) <= 2:
         state.create_mine(Mine(random.randint(120, 580), -100))
+
+    #create a new guy with a random x value and y value of 1
+    #has a 5% chance of spawning a guy
+    if random.randint(1, 50) <= 2:
+        state.create_guy(guy(random.randint(120, 580), -100))
     
     render_frame(state)
 
@@ -74,7 +79,7 @@ def process_input(state, step):
 
 
 def main():
-    pygame.mixer.music.play()
+    #pygame.mixer.music.play()
     # Create the state
     screendim = (800, 800)
     # is array to easily grab the x and y values
@@ -96,7 +101,7 @@ def main():
             pygame.mixer.music.rewind()
         game.updateKeys()
         create_main_surface(game)
-        for event in pygame.event.get():
+        for event in pygame.event.get(): 
             process_input(game, 1)
             if event.type == QUIT:
                 pygame.quit()
@@ -110,10 +115,12 @@ def main():
         time_elapsed = pygame.time.get_ticks() - start_time
         game.update_background(speed)
         game.update_mine(0, speed)
-        game.update_bullets(0, -25 )
+        game.update_bullets(0, -25)
+        game.update_guys(0, speed)
 
         checkMines(game)
         checkBullets(game)
+        checkGuys(game)
 
 if __name__ == '__main__':
     main()

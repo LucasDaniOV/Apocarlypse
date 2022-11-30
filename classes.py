@@ -18,6 +18,7 @@ class state:
         self.__pause = False
         self.__bullets = []
         self.__health = health()
+        self.__guys = []
 
     def render(self):
         if self.__pause == False:
@@ -27,6 +28,9 @@ class state:
 
             for bullet in self.__bullets:
                 bullet.render(self.__screen)
+            
+            for guy in self.__guys:
+                guy.render(self.__screen)
 
             self.__player.render(self.__screen)
             self.__health.grey_render(self.__screen)
@@ -94,7 +98,7 @@ class state:
     def explode_mine(self, mine):
         mine.explode()
     
-    def change_health(self, x):
+    def change_player_health(self, x):
         self.__health.change_health(x)
     
     def get_health(self):
@@ -122,6 +126,36 @@ class state:
 
     def get_topScreen(self):
         return self.__topScreen
+
+    def create_guy(self, guy):
+        if self.__pause == False:
+            self.__guys.append(guy)
+
+    def update_guys(self, x, y):
+        if self.__pause == False:
+            for guy in self.__guys:
+                guy.change_pos(x, y)
+    
+    def get_guys(self):
+        return self.__guys
+    
+    def remove_guy(self, guy):
+        for check in self.__guys:
+            if check == guy:
+                self.__guys.remove(check)
+    
+    def change_guy_health(self, guy, x):
+        guy.change_health(x)
+
+
+
+
+
+
+
+
+
+
 
 class player:
     def __init__(self, x, y):
@@ -250,13 +284,13 @@ class health:
 
     def render(self, screen):
         if self.__health > 100:
-            self.__rect = pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
+            pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
         elif self.__health <= 100 and self.__health > 50:
-            self.__rect = pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
+            pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
         elif self.__health <= 50:
-            self.__rect = pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
+            pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
     def grey_render(self, screen):
-        self.__bar = pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
+        pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
 
     def get_health(self):
         return self.__health
@@ -264,3 +298,56 @@ class health:
     def change_health(self, x):
         self.__health += x
         self.__rect = pygame.Rect(10, 10, self.__health, 25)
+
+class guy:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+        self.__image = pygame.image.load('./images/guy.gif')
+        self.__image = pygame.transform.scale(self.__image, (100, 100))
+        #rotate image
+        self.__image = pygame.transform.rotate(self.__image, 270)
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+        self.__health = 100
+        self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+
+    def render(self, screen):
+        self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
+        screen.blit(self.__image, (self.__x, self.__y))
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        
+        pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
+        
+        if self.__health > 50:
+            pygame.draw.rect(screen, (0, 255, 0), self.__healthRect, 25)
+        elif self.__health <= 50 and self.__health > 25:
+            pygame.draw.rect(screen, (255, 255, 0), self.__healthRect, 25)
+        elif self.__health <= 25:
+            pygame.draw.rect(screen, (255, 0, 0), self.__healthRect, 25)
+        
+        
+    
+    
+    def change_pos(self, x, y):
+        self.__x += x
+        self.__y += y
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+
+    def change_health(self, x):
+        self.__health += x
+    
+    def get_health(self):
+        return self.__health
+
+    def get_x(self):
+        return self.__x
+    
+    def get_y(self):
+        return self.__y
+    
+    def get_rect(self):
+        return self.__rect
