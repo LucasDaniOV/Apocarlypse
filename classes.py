@@ -12,14 +12,24 @@ class state:
         self.__background = background
         self.__mines = []
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
+        self.__bottomScreen  = self.__screen.get_rect().inflate(0, -799).move(0, 390)
+        self.__pause = False
 
     def render(self):
-        self.__background.render(self.__screen)
-        for mine in self.__mines:
-            mine.render(self.__screen)
-        self.__player.render(self.__screen)
-        pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
-        pygame.display.flip()
+        if self.__pause == False:
+            self.__background.render(self.__screen)
+            for mine in self.__mines:
+                mine.render(self.__screen)
+            self.__player.render(self.__screen)
+            pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
+            pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
+            pygame.display.flip()
+
+    def pause(self):
+        self.__pause = not self.__pause
+    
+    def get_pause(self):
+        return self.__pause
     
     def updateKeys(self):
         self.__keys.update()
@@ -28,24 +38,27 @@ class state:
         return self.__keys.is_key_down(key)
     
     def change_player_pos(self, x, y):
-        if is_inside(self.__bounds, self.__player.get_rect().move(x, y)):
-            self.__player.change_pos(x, y) 
-        else:
-            match (x, y):
-                case (x, 0):
-                    while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), 0))): 
-                        self.__player.change_pos(x/abs(x), 0)
-                case (0, y):
-                    while(is_inside(self.__bounds, self.__player.get_rect().move(0, y/abs(y)))):
-                        self.__player.change_pos(0, y/abs(y))
-                case (x, y):
-                    while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), y/abs(y)))):
-                        self.__player.change_pos(x/abs(x), y/abs(y))
+        if self.__pause == False:
+            if is_inside(self.__bounds, self.__player.get_rect().move(x, y)):
+                self.__player.change_pos(x, y) 
+            else:
+                match (x, y):
+                    case (x, 0):
+                        while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), 0))): 
+                            self.__player.change_pos(x/abs(x), 0)
+                    case (0, y):
+                        while(is_inside(self.__bounds, self.__player.get_rect().move(0, y/abs(y)))):
+                            self.__player.change_pos(0, y/abs(y))
+                    case (x, y):
+                        while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), y/abs(y)))):
+                            self.__player.change_pos(x/abs(x), y/abs(y))
     def update_background(self, a):
-        self.__background.update(a) 
+        if self.__pause == False:
+            self.__background.update(a) 
     
     def create_mine(self, mine):
-        self.__mines.append(mine)
+        if self.__pause == False:
+            self.__mines.append(mine)
 
     def get_mines_len(self):
         return len(self.__mines)
@@ -53,16 +66,22 @@ class state:
     def get_mines(self):
         return self.__mines
 
+    def get_bottomScreen(self):
+        return self.__bottomScreen
+
     def get_player(self):
         return self.__player
 
     def update_mine(self, x, y):
-        for mine in self.__mines:
-            mine.change_pos(x, y)
+        if self.__pause == False:
+            for mine in self.__mines:
+                mine.change_pos(x, y)
         
     def remove_mine(self, mine):
-        mine.explode()
         self.__mines.remove(mine)
+    
+    def explode_mine(self, mine):
+        mine.explode()
 
 class player:
     def __init__(self, x, y):

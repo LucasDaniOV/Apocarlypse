@@ -48,6 +48,9 @@ def process_input(state, step):
     elif state.is_key_down(K_DOWN):
         state.change_player_pos(0, step)
     
+    # Pause and unpause when p is pressed
+    elif state.is_key_down(K_p):
+        state.pause()
     
     
 
@@ -90,7 +93,12 @@ def main():
 
         for mine in mines:
             if not mine.get_exploded():
-                if touches(player.get_rect(), mine.get_rect()):
+                if touches(player.get_rect(), mine.get_rect()) or touches (mine.get_rect(), game.get_bottomScreen()):
+                    mine.explode()
+                
+                
+            if mine.get_exploded():
+                if touches (mine.get_rect(), game.get_bottomScreen()):
                     game.remove_mine(mine)
 
 if __name__ == '__main__':
