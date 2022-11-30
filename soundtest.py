@@ -83,15 +83,20 @@ class sound_library:
                     res.append(os.path.join(root, file))
 
         res = [e.replace("\\", "/") for e in res]
-        index = string.find('./sounds/sfx/explosion1.wav')
-        res[index:]
+        index = res.index('./sounds/sfx/explosion1.wav')
+        res = res[index:]
         print(res)
+        random_index = random.randint(0, len(res)-1)
+        
+        sfx = pygame.mixer.Sound(res[random_index])
+        pygame.mixer.Sound.play(sfx)
 
 
 
 # sfx1 = sound_library(r"./sounds")
 # sfx1.playsound("sfx/bullet_sfx")
-expl2 = sound_library(r"./sounds")
-expl2.playsound("sfx/explosion2")
+# expl1 = sound_library(r"./sounds")
+# expl1.playsound("sfx/explosion1")
+# expl1.play_random_explosion()
 
-time.sleep(10)
+time.sleep(1)
