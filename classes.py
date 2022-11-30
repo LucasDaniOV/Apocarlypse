@@ -9,13 +9,14 @@ class state:
         self.__keys = keyboard()
         self.__background = background
         self.__mines = []
+        self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
 
     def render(self):
         self.__background.render(self.__screen)
         for mine in self.__mines:
             mine.render(self.__screen)
         self.__player.render(self.__screen)
-        pygame.draw.rect(self.__screen, (0, 255, 0), self.__screen.get_rect(), 1) # border for debugging
+        pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
         pygame.display.flip()
     
     def updateKeys(self):
@@ -25,18 +26,18 @@ class state:
         return self.__keys.is_key_down(key)
     
     def change_player_pos(self, x, y):
-        if is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x, y)):
+        if is_inside(self.__bounds, self.__player.get_rect().move(x, y)):
             self.__player.change_pos(x, y) 
         else:
             match (x, y):
                 case (x, 0):
-                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x), 0))): 
+                    while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), 0))): 
                         self.__player.change_pos(x/abs(x), 0)
                 case (0, y):
-                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(0, y/abs(y)))):
+                    while(is_inside(self.__bounds, self.__player.get_rect().move(0, y/abs(y)))):
                         self.__player.change_pos(0, y/abs(y))
                 case (x, y):
-                    while(is_inside(self.__screen.get_rect(), self.__player.get_rect().move(x/abs(x), y/abs(y)))):
+                    while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), y/abs(y)))):
                         self.__player.change_pos(x/abs(x), y/abs(y))
     def update_background(self, a):
         self.__background.update(a) 
