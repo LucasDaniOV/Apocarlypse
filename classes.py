@@ -12,8 +12,8 @@ class state:
         self.__background = background
         self.__mines = []
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
-        self.__bottomScreen  = self.__screen.get_rect().inflate(0, -790).move(0, 390)
-        self.__topScreen = self.__screen.get_rect().inflate(0, -790).move(0, -350)
+        self.__bottomScreen  = Rect(0, 0, 800, 220).move(0, 900)
+        self.__topScreen = Rect(0, 0, 800, 220).move(0, -500)
         self.__pause = False
         self.__bullets = []
         self.__health = health()
@@ -226,17 +226,19 @@ class Bullet:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
+        self.__rect = pygame.Rect(self.__x, self.__y, 3, 10)
 
     def render(self, screen):
-        pygame.draw.rect(screen, (255, 0, 0), (self.__x, self.__y, 3, 10))
+        self.__rect = pygame.Rect(self.__x, self.__y, 3, 10)
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 5)
 
     def change_pos(self, x, y):
         self.__x += x
         self.__y += y
 
     def get_rect(self):
-        return pygame.Rect(self.__x, self.__y, 3, 10)
-        
+        return self.__rect
+
 class health:
     def __init__(self):
         self.__health = 200

@@ -23,11 +23,11 @@ def checkMines(game):
                     mine.explode()
                     game.change_health(-20)
 
-                if touches (mine.get_rect(), game.get_bottomScreen()):
+                if touches(mine.get_rect(), game.get_bottomScreen()):
                     game.remove_mine(mine)  
                 
             if mine.get_exploded():
-                if touches (mine.get_rect(), game.get_bottomScreen()):
+                if touches(mine.get_rect(), game.get_bottomScreen()):
                     game.remove_mine(mine)
 
 def checkBullets(state):
