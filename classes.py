@@ -18,6 +18,7 @@ class state:
         self.__pause = False
         self.__bullets = []
         self.__health = health()
+        self.__score = Score()
 
     def render(self):
         if self.__pause == False:
@@ -31,6 +32,7 @@ class state:
             self.__player.render(self.__screen)
             self.__health.grey_render(self.__screen)
             self.__health.render(self.__screen)
+            self.__score.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
             pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
@@ -122,6 +124,9 @@ class state:
 
     def get_topScreen(self):
         return self.__topScreen
+
+    def update_score(self, x):
+        self.__score.update_score(x)
 
 class player:
     def __init__(self, x, y):
@@ -264,3 +269,21 @@ class health:
     def change_health(self, x):
         self.__health += x
         self.__rect = pygame.Rect(10, 10, self.__health, 25)
+
+class Score:
+    def __init__(self):
+        self.__score = 0
+        self.__rect = pygame.Rect(490, 10, 300, 50)
+
+    def render(self, screen):
+        font = pygame.font.SysFont('Arial', 30)
+        text = font.render('Score: ' + str(round(self.__score)), True, (255, 255, 255))
+        self.__rect = pygame.draw.rect(screen, (0, 0, 0), self.__rect, 25)
+        screen.blit(text, (490, 10))
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1)
+
+    def get_score(self):
+        return self.__score
+    
+    def update_score(self, x):
+        self.__score += x

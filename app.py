@@ -107,13 +107,20 @@ def main():
             pygame.quit()
             sys.exit()
 
-        time_elapsed = pygame.time.get_ticks() - start_time
+        time_elapsed = (pygame.time.get_ticks() - start_time)
+        time_elapsed_sec = time_elapsed / 1000
+        speed = 5 + time_elapsed_sec / 10
+        if speed > 20:
+            speed = 20
+        print(time_elapsed_sec)
         game.update_background(speed)
         game.update_mine(0, speed)
         game.update_bullets(0, -25 )
 
         checkMines(game)
         checkBullets(game)
+
+        game.update_score(time_elapsed / 10000)
 
 if __name__ == '__main__':
     main()
