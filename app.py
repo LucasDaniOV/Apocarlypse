@@ -54,7 +54,6 @@ def process_input(state, step):
         state.change_player_pos(0, step)
     
     
-
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()

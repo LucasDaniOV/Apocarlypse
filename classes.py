@@ -22,6 +22,7 @@ class state:
             for mine in self.__mines:
                 mine.render(self.__screen)
             self.__player.render(self.__screen)
+            self.__health.grey_render(self.__screen)
             self.__health.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
@@ -194,6 +195,7 @@ class health:
     def __init__(self):
         self.__health = 200
         self.__rect = pygame.Rect(10, 10, self.__health, 25)
+        self.__bar = pygame.Rect(10, 10, 200, 25)
 
     def render(self, screen):
         if self.__health > 100:
@@ -202,6 +204,8 @@ class health:
             self.__rect = pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
         elif self.__health <= 50:
             self.__rect = pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
+    def grey_render(self, screen):
+        self.__bar = pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
 
     def get_health(self):
         return self.__health
