@@ -23,17 +23,23 @@ def render_frame(state):
     state.render()
 
 def process_input(state, step):
-    # Functions weird, needs fixing
-    # if state.is_key_down(K_LEFT) and state.is_key_down(K_DOWN):
-    #     state.change_player_pos(-100, -100)
-    # elif state.is_key_down(K_LEFT) and state.is_key_down(K_UP):
-    #     state.change_player_pos(-100, 100)
-    # elif state.is_key_down(K_RIGHT) and state.is_key_down(K_DOWN):
-    #     state.change_player_pos(100, -100)
-    # elif state.is_key_down(K_RIGHT) and state.is_key_down(K_UP):
-    #     state.change_player_pos(100, 100)
-    
-    if state.is_key_down(K_RIGHT):
+
+    # Don't move if opposite keys are pressed
+    if state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
+        state.change_player_pos(0, 0)
+    elif state.is_key_down(K_UP) and state.is_key_down(K_DOWN):
+        state.change_player_pos(0, 0)
+    # Diagonal
+    elif state.is_key_down(K_LEFT) and state.is_key_down(K_DOWN):
+        state.change_player_pos(-step, step)
+    elif state.is_key_down(K_LEFT) and state.is_key_down(K_UP):
+        state.change_player_pos(-step, -step)
+    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_DOWN):
+        state.change_player_pos(step, step)
+    elif state.is_key_down(K_RIGHT) and state.is_key_down(K_UP):
+        state.change_player_pos(step, -step)
+    # Axis
+    elif state.is_key_down(K_RIGHT):
         state.change_player_pos(step, 0)
     elif state.is_key_down(K_LEFT):
         state.change_player_pos(-step, 0)
@@ -41,6 +47,9 @@ def process_input(state, step):
         state.change_player_pos(0, -step)
     elif state.is_key_down(K_DOWN):
         state.change_player_pos(0, step)
+    
+    
+    
 
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
@@ -59,13 +68,14 @@ def main():
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
     speed = 5
+    pygame.key.set_repeat(3)
 
     while True:
         clock.tick(60)
         game.updateKeys()
         create_main_surface(game)
         for event in pygame.event.get():
-            process_input(game, 50)
+            process_input(game, 1)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()

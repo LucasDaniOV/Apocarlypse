@@ -118,7 +118,7 @@ class Mine:
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
-        self.__image = pygame.transform.scale(self.__image, (100, 100))
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
         pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
 
     def get_rect(self):
