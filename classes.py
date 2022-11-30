@@ -91,6 +91,11 @@ class state:
     def create_bullet(self, bullet):
         if self.__pause == False:
             self.__bullets.append(bullet)
+    
+    def update_bullets(self, x, y):
+        if self.__pause == False:
+            for bullet in self.__bullets:
+                bullet.change_pos(x, y)
 
 class player:
     def __init__(self, x, y):
@@ -198,4 +203,8 @@ class Bullet:
         self.__y = y
 
     def render(self, screen):
-        pygame.draw.rect(screen, (255, 255, 0), (self.__x, self.__y, 3, 10))
+        pygame.draw.rect(screen, (255, 0, 0), (self.__x, self.__y, 3, 10))
+
+    def change_pos(self, x, y):
+        self.__x += x
+        self.__y += y
