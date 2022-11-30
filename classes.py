@@ -2,6 +2,8 @@ import pygame
 import sys
 from pygame.locals import *
 from functions import *
+import time
+
 class state:
     def __init__(self, screendim, startpos, background, mine):
         self.__screen = pygame.display.set_mode(screendim)
@@ -57,6 +59,11 @@ class state:
     def update_mine(self, x, y):
         for mine in self.__mines:
             mine.change_pos(x, y)
+        
+    def remove_mine(self, mine):
+        mine.explode()
+
+        #self.__mines.remove(mine)
 
 class player:
     def __init__(self, x, y):
@@ -143,3 +150,8 @@ class Mine:
         self.__x += x
         self.__y += y
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+
+    def explode(self):
+        image = pygame.image.load('./images/explosion.png')
+        image = pygame.transform.scale(image, (100, 100))
+        self.__image = image

@@ -9,3 +9,6 @@ from classes import *
 
 def is_inside(rect1, rect2):
     return rect1.contains(rect2)
+
+def touches(rect1, rect2):
+    return rect1.colliderect(rect2)

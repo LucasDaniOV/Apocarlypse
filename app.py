@@ -89,11 +89,10 @@ def main():
 def process_collision(state):
     mines = state.get_mines()
     player = state.get_player()
+
     for mine in mines:
-        if is_inside(player.get_rect(), mine.get_rect()):
-            print("Collision!")
-            pygame.quit()
-            sys.exit()
+        if touches(player.get_rect(), mine.get_rect()):
+            state.remove_mine(mine)
 
 if __name__ == '__main__':
     main()
