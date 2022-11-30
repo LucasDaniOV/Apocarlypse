@@ -111,7 +111,7 @@ class Mine:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
-        self.__image = pygame.image.load('./images/rock.png')
+        self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (100, 100))
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
