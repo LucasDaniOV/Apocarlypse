@@ -1,5 +1,5 @@
 import pygame
-
+import random
 import sys
 from pygame.locals import *
 from pygame.display import flip
@@ -47,7 +47,8 @@ def main():
     startpos = [400, 400]
 
     y = 0
-    game = state(screendim, startpos, Background("./images/highway.png", y), Mine(300, 0))
+    mine = Mine(300, 0)
+    game = state(screendim, startpos, Background("./images/highway.png", y), mine)
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
     speed = 5

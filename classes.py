@@ -122,6 +122,9 @@ class Mine:
         return self.__y
 
     def change_pos(self, x, y):
+        if self.__y > 800:
+            self.__y = -100
+
         self.__x += x
         self.__y += y
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
