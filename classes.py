@@ -12,7 +12,7 @@ class state:
         self.__background = background
         self.__mines = []
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
-        self.__bottomScreen  = Rect(0, 0, 800, 220).move(0, 900)
+        self.__bottomScreen  = Rect(0, 0, 800, 220).move(0, 800)
         self.__topScreen = Rect(0, 0, 800, 220).move(0, -500)
         self.__pause = False
         self.__bullets = []
