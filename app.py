@@ -65,7 +65,8 @@ def process_input(state, step):
 
 
 def main():
-    pygame.mixer.music.play()
+    # infinite loop bgm
+    pygame.mixer.music.play(loops=-1)
     # Create the state
     screendim = (800, 800)
     # is array to easily grab the x and y values
@@ -81,10 +82,6 @@ def main():
 
     while True:
         clock.tick(60)
-        a = 0
-        a = pygame.mixer.music.get_pos()
-        if a > 195000:
-            pygame.mixer.music.rewind()
         game.updateKeys()
         create_main_surface(game)
         for event in pygame.event.get():

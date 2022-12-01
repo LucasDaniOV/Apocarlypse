@@ -11,7 +11,7 @@ pygame.mixer.init()
 pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
 # pygame.mixer.music.play()
 
-def is_explosion(filename): 
+def is_explosion(filename):     # see line 76
     return "explosion" in filename
 
 class sound_library:
@@ -27,7 +27,7 @@ class sound_library:
     def addsound(self, name, location):
         self.sounds[name]=location
 
-    def find_audio_files(self):
+    def find_audio_files(self):     # returns all locations of .wav, .ogg & .mp3 files in "sounds" folder
         res = []
 
         for root, dirs, files in os.walk(r"./sounds"):
@@ -44,7 +44,7 @@ class sound_library:
         # print(res)
         return res    
 
-    def derive_id(self):
+    def derive_id(self):     # returns only the parent directory and filename of all .wav, .ogg & .mp3 files in "sounds" folder
         res = []
 
         for root, dirs, files in os.walk(r"./sounds"):
@@ -73,9 +73,7 @@ class sound_library:
             table[ID]=path
         return table
 
-    
-    
-    def play_random_explosion(self):
+    def play_random_explosion(self):     # creates a list with all "explosion.wav" files and randomly selects one for availability
         res = []
 
         for root, dirs, files in os.walk(r"./sounds"):
@@ -96,11 +94,12 @@ class sound_library:
         pygame.mixer.Sound.play(sfx)
 
 
+# for testing:
 
 # sfx1 = sound_library(r"./sounds")
 # sfx1.playsound("sfx/bullet_sfx")
-# expl1 = sound_library(r"./sounds")
-# expl1.playsound("sfx/explosion1")
-# expl1.play_random_explosion()
+# expl2 = sound_library(r"./sounds")
+# expl2.playsound("sfx/explosion2")
+# expl2.play_random_explosion()
 
 # time.sleep(1)
