@@ -188,7 +188,7 @@ class state:
     
     def change_boss_health(self, boss, x):
         boss.change_health(x)
-        def update_score(self, x):
+    def update_score(self, x):
         self.__score.update_score(x)
 
     def get_startbanner(self):
@@ -202,7 +202,7 @@ class state:
     
     def kill_boss(self, boss):
         boss.die()
-        def update_endbanner(self, x):
+    def update_endbanner(self, x):
         self.__endBanner.update(x)
     
 

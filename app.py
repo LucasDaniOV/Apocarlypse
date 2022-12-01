@@ -136,6 +136,7 @@ def main():
                 pygame.quit()
                 sys.exit()
         if lastP < 11:
+            lastP += 1
     
         if game.is_key_down(K_RETURN):
             if game.get_startbanner():
@@ -143,7 +144,7 @@ def main():
                 start_time = pygame.time.get_ticks()
                 time_elapsed = 0
                 
-        lastP += 1
+        
         
         if not game.get_startbanner():
             time_elapsed = (pygame.time.get_ticks() - start_time)
