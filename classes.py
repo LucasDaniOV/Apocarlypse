@@ -50,8 +50,12 @@ class state:
             pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
-    def pause(self):
-        self.__pause = not self.__pause
+    def pause(self, lastP):
+        if lastP > 10:
+            self.__pause = not self.__pause
+            return 0
+        else:
+            return lastP
     
     def pause2(self, x):
         self.__pause = x
