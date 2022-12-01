@@ -4,6 +4,8 @@ import sys
 from pygame.locals import *
 from pygame.display import flip
 from classes import *
+import random
+
 from soundtest import *
 
 # Contains helper functions
@@ -22,7 +24,7 @@ def checkMines(game):
             if not mine.get_exploded():
                 if touches(player.get_rect(), mine.get_rect()):
                     mine.explode()
-                    game.change_health(-20)
+                    game.change_player_health(-20)
 
                 if touches(mine.get_rect(), game.get_bottomScreen()):
                     game.remove_mine(mine)  
@@ -31,11 +33,32 @@ def checkMines(game):
                 if touches(mine.get_rect(), game.get_bottomScreen()):
                     game.remove_mine(mine)
 
+def checkGuys(game):
+    guys = game.get_guys()
+    player = game.get_player()
+    bullets = game.get_bullets()
+    for guy in guys:
+        for bullet in bullets:
+            if touches(bullet.get_rect(), guy.get_rect()):
+                if guy.get_health() > 0:
+                    game.change_guy_health(guy, -10)
+                    game.remove_bullet(bullet)
+        if touches(player.get_rect(), guy.get_rect()) and not guy.get_dead():
+            if guy.get_health() > 0:
+                game.kill_guy(guy)
+                game.change_player_health(-10)
+
+        if guy.get_health() <= 0 and not guy.get_dead():
+            game.kill_guy(guy)    
+        
+        if touches(guy.get_rect(), game.get_bottomScreen()):
+            game.remove_guy(guy)
+        
+
 def checkBullets(state):
     bullets = state.get_bullets()
     for bullet in bullets:
         if touches(bullet.get_rect(), state.get_topScreen()):
             state.remove_bullet(bullet)
-        # if touches(bullet.get_rect(), player.get_rect()):
-        #     game.remove_bullet(bullet)
-        #     game.change_health(-10)
+
+

@@ -8,7 +8,7 @@ import random
 
 pygame.mixer.init()
 
-pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
+# pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
 # pygame.mixer.music.play()
 
 def is_explosion(filename): 
