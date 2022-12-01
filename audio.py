@@ -7,8 +7,7 @@ import re
 import random
 
 pygame.mixer.init()
-
-#pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
+pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
 #pygame.mixer.music.play()
 
 def is_explosion(filename):     # see line 76
@@ -101,5 +100,7 @@ class sound_library:
 # expl2 = sound_library(r"./sounds")
 # expl2.playsound("sfx/explosion2")
 # expl2.play_random_explosion()
+# sfx2 = sound_library(r"./sounds")
+# sfx2.playsound("sfx/splashBig")
 
 # time.sleep(1)

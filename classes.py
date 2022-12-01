@@ -3,7 +3,8 @@ import sys
 from pygame.locals import *
 from functions import *
 import time
-from soundtest import *
+from functions import is_inside
+from audio import *
 
 class state:
     def __init__(self, screendim, startpos, background, mine):
@@ -18,6 +19,8 @@ class state:
         self.__pause = False
         self.__bullets = []
         self.__health = health()
+        self.__guys = []
+        self.__score = Score()
 
     def render(self):
         if self.__pause == False:
@@ -27,17 +30,25 @@ class state:
 
             for bullet in self.__bullets:
                 bullet.render(self.__screen)
+            
+            for guy in self.__guys:
+                guy.render(self.__screen)
 
             self.__player.render(self.__screen)
             self.__health.grey_render(self.__screen)
             self.__health.render(self.__screen)
+            self.__score.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
             pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
-    def pause(self):
-        self.__pause = not self.__pause
+    def pause(self, lastP):
+        if lastP > 10:
+            self.__pause = not self.__pause
+            return 0
+        else:
+            return lastP
     
     def get_pause(self):
         return self.__pause
@@ -63,6 +74,7 @@ class state:
                     case (x, y):
                         while(is_inside(self.__bounds, self.__player.get_rect().move(x/abs(x), y/abs(y)))):
                             self.__player.change_pos(x/abs(x), y/abs(y))
+
     def update_background(self, a):
         if self.__pause == False:
             self.__background.update(a) 
@@ -94,7 +106,7 @@ class state:
     def explode_mine(self, mine):
         mine.explode()
     
-    def change_health(self, x):
+    def change_player_health(self, x):
         self.__health.change_health(x)
     
     def get_health(self):
@@ -103,10 +115,11 @@ class state:
     def create_bullet(self, bullet):
         if self.__pause == False:
             self.__bullets.append(bullet)
+
             for check in self.__bullets:
                 if not check == bullet:
-                    if touches(check.get_rect(), bullet.get_rect()):
-                        self.__bullets.remove(check)
+                    if touches(bullet.get_rect().inflate(5,50), check.get_rect().inflate(0,50)):
+                        del self.__bullets[len(self.__bullets)-1]
                 
     
     def get_bullets(self):
@@ -123,18 +136,59 @@ class state:
     def get_topScreen(self):
         return self.__topScreen
 
+    def create_guy(self, guy):
+        if self.__pause == False:
+            self.__guys.append(guy)
+
+    def update_guys(self, x, y):
+        if self.__pause == False:
+            for guy in self.__guys:
+                if guy.get_dead():
+                    guy.change_pos(x, y)
+                else:
+                    guy.change_pos(x, y + 3 + y - 5)
+    
+    def get_guys(self):
+        return self.__guys
+    
+    def remove_guy(self, guy):
+        for check in self.__guys:
+            if check == guy:
+                self.__guys.remove(check)
+    
+    def change_guy_health(self, guy, x):
+        guy.change_health(x)
+
+    def kill_guy(self, guy):
+        guy.die()
+
+
+
+# ---------------------------------- #
+# Object classes
+# ---------------------------------- #
+
+
+
+
+
+
+    def update_score(self, x):
+        self.__score.update_score(x)
+
 class player:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
         self.__image = pygame.image.load('./images/small-minigun-car.png')
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
-
-        #self.__image = pygame.transform.scale(self.__image, (200, 300))
+        self.__image = pygame.transform.scale(self.__image, (80, 160))
+        
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
         pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        self.__image = pygame.transform.scale(self.__image, (80, 160))
     
     
     def change_pos(self, x, y):
@@ -224,8 +278,7 @@ class Mine:
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
 
-class Bullet:
-    
+class bullet:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
@@ -250,13 +303,13 @@ class health:
 
     def render(self, screen):
         if self.__health > 100:
-            self.__rect = pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
+            pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
         elif self.__health <= 100 and self.__health > 50:
-            self.__rect = pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
+            pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
         elif self.__health <= 50:
-            self.__rect = pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
+            pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
     def grey_render(self, screen):
-        self.__bar = pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
+        pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
 
     def get_health(self):
         return self.__health
@@ -264,3 +317,88 @@ class health:
     def change_health(self, x):
         self.__health += x
         self.__rect = pygame.Rect(10, 10, self.__health, 25)
+
+class guy:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+        self.__image = pygame.image.load('./images/zombie.png')
+        self.__image = pygame.transform.scale(self.__image, (100, 100))
+        #rotate image
+        self.__image = pygame.transform.rotate(self.__image, 180)
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+        self.__health = 100
+        self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+        self.__dead = False
+
+    def render(self, screen):
+        self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
+        screen.blit(self.__image, (self.__x, self.__y))
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        
+        if self.__health > 0:
+            pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
+        
+        if self.__health > 50:
+            pygame.draw.rect(screen, (0, 255, 0), self.__healthRect, 25)
+        elif self.__health <= 50 and self.__health > 25:
+            pygame.draw.rect(screen, (255, 255, 0), self.__healthRect, 25)
+        elif self.__health <= 25:
+            pygame.draw.rect(screen, (255, 0, 0), self.__healthRect, 25)
+        
+        
+    
+    
+    def change_pos(self, x, y):
+        self.__x += x
+        self.__y += y
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+
+    def change_health(self, x):
+        self.__health += x
+    
+    def get_health(self):
+        return self.__health
+
+    def get_x(self):
+        return self.__x
+    
+    def get_y(self):
+        return self.__y
+    
+    def get_rect(self):
+        return self.__rect
+
+    def die(self):
+        self.__health = 0
+        self.__dead = True
+        self.__image = pygame.image.load('./images/bloodSplatter.png')
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
+        death1 = sound_library(r"./sounds")
+        death1.playsound("sfx/splash")
+
+    def get_dead(self):
+        return self.__dead
+        
+class Score:
+    def __init__(self):
+        self.__score = 0
+        self.__rect = pygame.Rect(490, 10, 300, 50)
+
+    def render(self, screen):
+        font = pygame.font.SysFont('Arial', 30)
+        text = font.render('Score: ' + str(round(self.__score)), True, (255, 255, 255))
+        self.__rect = pygame.draw.rect(screen, (0, 0, 0), self.__rect, 25)
+        screen.blit(text, (490, 10))
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1)
+
+    def get_score(self):
+        return self.__score
+    
+
+    def update_score(self, x):
+        self.__score += x
