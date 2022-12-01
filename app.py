@@ -23,13 +23,13 @@ def create_main_surface(state, time):
         state.create_mine(Mine(random.randint(120, 580), -100))
 
     #create a new guy with a random x value and y value of 1
-    #has a 5% chance of spawning a guy
-    if random.randint(1, 1000) <= 5:
+    #has a 20% chance of spawning a guy
+    if random.randint(1, 1000) <= 20:
         state.create_guy(guy(random.randint(120, 580), -100))
 
     #create a new boss with a random x value and y value of 1
-    #has a 5% chance of spawning a boss
-    if time > 20 and random.randint(1, 500) <= 5 and state.get_bosses() == []:
+    #has a 1% chance of spawning a boss
+    if time > 20 and random.randint(1, 500) <= 1 and state.get_bosses() == []:
         state.create_boss(boss(random.randint(150, 400), -100))
     
     render_frame(state)
@@ -151,8 +151,8 @@ def main():
         
         time_elapsed_sec = time_elapsed / 1000
         speed = 5 + time_elapsed_sec / 10
-        if speed > 20:
-            speed = 20
+        if speed > 15:
+            speed = 15
         print(time_elapsed_sec)
 
         if not game.get_startbanner():

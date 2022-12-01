@@ -49,13 +49,17 @@ def checkGuys(game):
             if guy.get_health() > 0:
                 game.kill_guy(guy)
                 game.change_player_health(-10)
+                game.update_zombies_killed(1)
+                game.update_score(100)
 
         if guy.get_health() <= 0 and not guy.get_dead():
             game.kill_guy(guy)
+            game.update_zombies_killed(1)
+            game.update_score(100)
                 
         
         if touches(guy.get_rect(), game.get_bottomScreen()):
-            game.remove_guy(guy)
+            game.remove_guy(guy)       
         
 
 def checkBullets(state):
@@ -79,10 +83,13 @@ def checkBosses(game):
             if boss.get_health() > 0:
                 game.kill_boss(boss)
                 game.change_player_health(-100)
+                game.update_bosses_killed(1)
+                game.update_score(500)
 
         if boss.get_health() <= 0 and not boss.get_dead():
             game.kill_boss(boss)
-                
+            game.update_bosses_killed(1)
+            game.update_score(500)
         
         if touches(boss.get_rect(), game.get_bottomScreen().move(0, 300)):
             game.remove_boss(boss)

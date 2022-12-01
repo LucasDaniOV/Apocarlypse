@@ -156,7 +156,7 @@ class state:
                 if guy.get_dead():
                     guy.change_pos(x, y)
                 else:
-                    guy.change_pos(x, y + 3 + y - 5)
+                    guy.change_pos(x, y + 3)
     
     def get_guys(self):
         return self.__guys
@@ -209,9 +209,11 @@ class state:
     def update_endbanner(self, x):
         self.__endBanner.update(x)
     
+    def update_zombies_killed(self, x):
+        self.__score.update_zombies_killed(x)
 
-
-
+    def update_bosses_killed(self, x):
+        self.__score.update_bosses_killed(x)
 
     def render_endbanner(self):
         self.__endBanner.render(self.__screen)
@@ -431,14 +433,19 @@ class guy:
 class Score:
     def __init__(self):
         self.__score = 0
-        self.__rect = pygame.Rect(490, 10, 300, 50)
+        self.__zombies_killed = 0
+        self.__bosses_killed = 0
 
     def render(self, screen):
         font = pygame.font.SysFont('Arial', 30)
         text = font.render('Score: ' + str(round(self.__score)), True, (255, 255, 255))
-        self.__rect = pygame.draw.rect(screen, (0, 0, 0), self.__rect, 25)
+        pygame.draw.rect(screen, (0, 0, 0), (490, 10, 300,100))
         screen.blit(text, (490, 10))
-        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1)
+        
+        zombies_killed = font.render('Zombies Killed: ' + str(self.__zombies_killed), True, (255, 255, 255))
+        screen.blit(zombies_killed, (490, 40))
+        bosses_killed = font.render('Bosses Killed: ' + str(self.__bosses_killed), True, (255, 255, 255))
+        screen.blit(bosses_killed, (490, 70))
 
     def get_score(self):
         return self.__score
@@ -446,6 +453,12 @@ class Score:
 
     def update_score(self, x):
         self.__score += x
+
+    def update_zombies_killed(self, x):
+        self.__zombies_killed += x
+
+    def update_bosses_killed(self, x):
+        self.__bosses_killed += x
 
 class boss:
     def __init__(self, x, y):
