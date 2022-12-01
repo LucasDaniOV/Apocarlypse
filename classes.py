@@ -13,17 +13,27 @@ class state:
         self.__background = background
         self.__mines = []
         self.__bounds = self.__screen.get_rect().inflate(-250, -500).move(0, 220)
-        self.__bottomScreen  = self.__screen.get_rect().inflate(0, -799).move(0, 390)
+        self.__bottomScreen  = Rect(0, 0, 800, 220).move(0, 800)
+        self.__topScreen = Rect(0, 0, 800, 220).move(0, -500)
         self.__pause = False
+        self.__bullets = []
+        self.__health = health()
 
     def render(self):
         if self.__pause == False:
             self.__background.render(self.__screen)
             for mine in self.__mines:
                 mine.render(self.__screen)
+
+            for bullet in self.__bullets:
+                bullet.render(self.__screen)
+
             self.__player.render(self.__screen)
+            self.__health.grey_render(self.__screen)
+            self.__health.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
+            pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
     def pause(self):
@@ -83,12 +93,41 @@ class state:
     
     def explode_mine(self, mine):
         mine.explode()
+    
+    def change_health(self, x):
+        self.__health.change_health(x)
+    
+    def get_health(self):
+        return self.__health.get_health()
+
+    def create_bullet(self, bullet):
+        if self.__pause == False:
+            self.__bullets.append(bullet)
+            for check in self.__bullets:
+                if not check == bullet:
+                    if touches(check.get_rect(), bullet.get_rect()):
+                        self.__bullets.remove(check)
+                
+    
+    def get_bullets(self):
+        return self.__bullets
+    
+    def remove_bullet(self, bullet):
+        self.__bullets.remove(bullet)
+    
+    def update_bullets(self, x, y):
+        if self.__pause == False:
+            for bullet in self.__bullets:
+                bullet.change_pos(x, y)
+
+    def get_topScreen(self):
+        return self.__topScreen
 
 class player:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
-        self.__image = pygame.image.load('./images/car.png')
+        self.__image = pygame.image.load('./images/small-minigun-car.png')
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
 
         #self.__image = pygame.transform.scale(self.__image, (200, 300))
@@ -184,3 +223,44 @@ class Mine:
     def reset_mine(self):
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (50, 50))
+
+class Bullet:
+    
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+        self.__rect = pygame.Rect(self.__x, self.__y, 3, 10)
+
+    def render(self, screen):
+        self.__rect = pygame.Rect(self.__x, self.__y, 3, 10)
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 5)
+
+    def change_pos(self, x, y):
+        self.__x += x
+        self.__y += y
+
+    def get_rect(self):
+        return self.__rect
+
+class health:
+    def __init__(self):
+        self.__health = 200
+        self.__rect = pygame.Rect(10, 10, self.__health, 25)
+        self.__bar = pygame.Rect(10, 10, 200, 25)
+
+    def render(self, screen):
+        if self.__health > 100:
+            self.__rect = pygame.draw.rect(screen, (0, 255, 0), self.__rect, 25)
+        elif self.__health <= 100 and self.__health > 50:
+            self.__rect = pygame.draw.rect(screen, (255, 255, 0), self.__rect, 25)
+        elif self.__health <= 50:
+            self.__rect = pygame.draw.rect(screen, (255, 0, 0), self.__rect, 25)
+    def grey_render(self, screen):
+        self.__bar = pygame.draw.rect(screen, (100, 100, 100), self.__bar, 25)
+
+    def get_health(self):
+        return self.__health
+    
+    def change_health(self, x):
+        self.__health += x
+        self.__rect = pygame.Rect(10, 10, self.__health, 25)
