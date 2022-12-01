@@ -13,7 +13,7 @@ import time
 pygame.init()
 
 
-def create_main_surface(state):
+def create_main_surface(state, time):
     #create a new mine with a random x value and y value of 1 
     #has a 5% chance of spawning a mine
 
@@ -22,8 +22,13 @@ def create_main_surface(state):
 
     #create a new guy with a random x value and y value of 1
     #has a 5% chance of spawning a guy
-    if random.randint(1, 100) <= 5:
+    if random.randint(1, 1000) <= 5:
         state.create_guy(guy(random.randint(120, 580), -100))
+
+    #create a new boss with a random x value and y value of 1
+    #has a 5% chance of spawning a boss
+    if time > 3 and random.randint(1, 100) <= 5 and state.get_bosses() == []:
+        state.create_boss(boss(random.randint(150, 400), -100))
     
     render_frame(state)
 
@@ -119,7 +124,6 @@ def main():
         if a > 195000:
             pygame.mixer.music.rewind()
         game.updateKeys()
-        create_main_surface(game)
         for event in pygame.event.get(): 
             lastP = process_input(game, 1, lastP)
             if event.type == QUIT:
@@ -141,12 +145,15 @@ def main():
         game.update_mine(0, speed)
         game.update_bullets(0, -50)
         game.update_guys(0, speed)
+        game.update_bosses(0, speed/8)
 
         checkMines(game)
         checkBullets(game)
         checkGuys(game)
+        checkBosses(game)
 
         game.update_score(time_elapsed / 10000)
+        create_main_surface(game, time_elapsed_sec)
 
 if __name__ == '__main__':
-    main()
+    main()    
