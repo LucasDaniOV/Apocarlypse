@@ -30,13 +30,14 @@ def create_main_surface(state):
 def render_frame(state):
     state.render()
 
-def process_input(state, step):
+def process_input(state, step, lastP):
     bulletspread = [-20, 30]
     # Pause and unpause when p is pressed
     if state.is_key_down(K_p):
-        state.pause()
+       lastP = state.pause(lastP)
     
     # Move and shoot at the same time
+    
     elif state.is_key_down(K_LEFT) and state.is_key_down(K_SPACE):
         state.change_player_pos(-step, 0)
         state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
@@ -44,6 +45,10 @@ def process_input(state, step):
         state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
     elif state.is_key_down(K_RIGHT) and state.is_key_down(K_SPACE):
         state.change_player_pos(step, 0)
+        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    elif state.is_key_down(K_SPACE):
         state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
         state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
         state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
@@ -78,17 +83,15 @@ def process_input(state, step):
     elif state.is_key_down(K_p):
         state.pause()
 
-    #bullets
-    if state.is_key_down(K_SPACE):
-        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    
     
 
     
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()
+    
+    return lastP
 
 
 def main():
@@ -104,9 +107,10 @@ def main():
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
     speed = 5
-    pygame.key.set_repeat(speed -2)
+    lastP = 700
 
     while True:
+        pygame.key.set_repeat(round(speed) -2)
         clock.tick(60)
         a = 0
         a = pygame.mixer.music.get_pos()
@@ -115,16 +119,15 @@ def main():
         game.updateKeys()
         create_main_surface(game)
         for event in pygame.event.get(): 
-            process_input(game, 1)
+            lastP = process_input(game, 1, lastP)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
+        lastP += 1
         if game.get_health() <= 0:    
             time.sleep(5)
             pygame.quit()
             sys.exit()
-
         time_elapsed = (pygame.time.get_ticks() - start_time)
         time_elapsed_sec = time_elapsed / 1000
         speed = 5 + time_elapsed_sec / 10
