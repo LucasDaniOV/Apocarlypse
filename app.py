@@ -108,9 +108,9 @@ def main():
     start_time = pygame.time.get_ticks()
     speed = 5
     lastP = 700
+    pygame.key.set_repeat(round(speed) -2)
 
     while True:
-        pygame.key.set_repeat(round(speed) -2)
         clock.tick(60)
         a = 0
         a = pygame.mixer.music.get_pos()
