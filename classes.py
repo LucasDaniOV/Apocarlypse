@@ -150,10 +150,14 @@ class state:
     def change_guy_health(self, guy, x):
         guy.change_health(x)
 
+    def kill_guy(self, guy):
+        guy.die()
 
 
 
-
+# ---------------------------------- #
+# Object classes
+# ---------------------------------- #
 
 
 
@@ -166,8 +170,8 @@ class player:
         self.__y = y
         self.__image = pygame.image.load('./images/small-minigun-car.png')
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
-
-        self.__image = pygame.transform.scale(self.__image, (200, 300))
+        self.__image = pygame.transform.scale(self.__image, (80, 160))
+        
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
@@ -315,6 +319,7 @@ class guy:
         self.__health = 100
         self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
         self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+        self.__dead = False
 
     def render(self, screen):
         self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
@@ -324,7 +329,8 @@ class guy:
         screen.blit(self.__image, (self.__x, self.__y))
         pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
         
-        pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
+        if self.__health > 0:
+            pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
         
         if self.__health > 50:
             pygame.draw.rect(screen, (0, 255, 0), self.__healthRect, 25)
@@ -355,3 +361,13 @@ class guy:
     
     def get_rect(self):
         return self.__rect
+
+    def die(self):
+        self.__health = 0
+        self.__dead = True
+        self.__image = pygame.image.load('./images/bloodSplatter.png')
+        self.__image = pygame.transform.scale(self.__image, (50, 50))
+
+    def get_dead(self):
+        return self.__dead
+        

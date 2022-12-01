@@ -79,7 +79,7 @@ def process_input(state, step):
         state.pause()
 
     #bullets
-    elif state.is_key_down(K_SPACE):
+    if state.is_key_down(K_SPACE):
         state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
         state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
         state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
