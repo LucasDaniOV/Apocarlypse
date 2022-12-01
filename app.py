@@ -90,6 +90,9 @@ def process_input(state, step):
         pygame.quit()
         sys.exit()
 
+    #if enter is pressed, the game will start
+    elif state.is_key_down(K_RETURN):
+        state.update_startbanner(False)
 
 def main():
     #pygame.mixer.music.play(loops = -1)
@@ -101,6 +104,7 @@ def main():
     y = 0
     mine = Mine(300, 0)
     game = state(screendim, startpos, Background("./images/highway.png", y), mine)
+
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
     speed = 5
@@ -120,10 +124,6 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        if game.get_health() <= 0:    
-            time.sleep(5)
-            pygame.quit()
-            sys.exit()
 
         time_elapsed = (pygame.time.get_ticks() - start_time)
         time_elapsed_sec = time_elapsed / 1000
@@ -131,16 +131,33 @@ def main():
         if speed > 20:
             speed = 20
         print(time_elapsed_sec)
-        game.update_background(speed)
-        game.update_mine(0, speed)
-        game.update_bullets(0, -50)
-        game.update_guys(0, speed)
+
+        if not game.get_startbanner():
+            game.update_background(speed)
+            game.update_mine(0, speed)
+            game.update_bullets(0, -50)
+            game.update_guys(0, speed)
 
         checkMines(game)
         checkBullets(game)
         checkGuys(game)
 
         game.update_score(time_elapsed / 10000)
+
+
+        if game.get_health() <= 0:
+            #stop time and display score
+            time_elapsed = 0
+
+            game.pause()
+            game.update_endbanner(True)
+            game.render_endbanner()
+            pygame.display.flip()
+
+            if game.is_key_down(K_RETURN):
+                game.update_endbanner(False)
+                game.update_startbanner(True)
+                game.change_player_health(200)
 
 if __name__ == '__main__':
     main()
