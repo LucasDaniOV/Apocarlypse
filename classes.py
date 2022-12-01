@@ -316,10 +316,10 @@ class guy:
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
-        self.__image = pygame.image.load('./images/guy.gif')
+        self.__image = pygame.image.load('./images/zombie.png')
         self.__image = pygame.transform.scale(self.__image, (100, 100))
         #rotate image
-        self.__image = pygame.transform.rotate(self.__image, 270)
+        self.__image = pygame.transform.rotate(self.__image, 180)
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
         self.__health = 100
         self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)

@@ -22,7 +22,7 @@ def create_main_surface(state):
 
     #create a new guy with a random x value and y value of 1
     #has a 5% chance of spawning a guy
-    if random.randint(1, 1000) <= 5:
+    if random.randint(1, 100) <= 5:
         state.create_guy(guy(random.randint(120, 580), -100))
     
     render_frame(state)
@@ -134,7 +134,7 @@ def main():
         game.update_background(speed)
         game.update_mine(0, speed)
         game.update_bullets(0, -50)
-        game.update_guys(0, speed)
+        game.update_guys(0, speed + 5)
 
         checkMines(game)
         checkBullets(game)
