@@ -1,12 +1,14 @@
 import pygame
-
+import random
 import sys
 from pygame.locals import *
 from pygame.display import flip
-from classes import *
+from classes import * 
+from functions import *
 import random
-
 from soundtest import *
+import time
+from app import *
 
 # Contains helper functions
 
@@ -61,5 +63,6 @@ def checkBullets(state):
     for bullet in bullets:
         if touches(bullet.get_rect(), state.get_topScreen()):
             state.remove_bullet(bullet)
+
 
 

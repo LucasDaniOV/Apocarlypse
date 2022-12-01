@@ -47,8 +47,11 @@ class state:
             pygame.display.flip()
 
     def pause(self):
-        self.__pause = True
+        self.__pause = not self.__pause
     
+    def pause2(self, x):
+        self.__pause = x
+
     def get_pause(self):
         return self.__pause
     
@@ -286,7 +289,6 @@ class Mine:
         self.__image = pygame.transform.scale(self.__image, (50, 50))
 
 class bullet:
-    
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
@@ -423,8 +425,8 @@ class startBanner:
         if self.__status == True:
             font = pygame.font.SysFont('Arial', 50)
             text = font.render('Press Enter to Start', True, (255, 255, 255))
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(200, 300, 450, 50), 25)
-            screen.blit(text, (200, 300))
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(175, 300, 450, 50), 25)
+            screen.blit(text, (175, 300))
 
 class endBanner:
     def __init__(self):
@@ -441,7 +443,7 @@ class endBanner:
             font = pygame.font.SysFont('Arial', 50)
             text = font.render('Game Over', True, (255, 255, 255))
             text2 = font.render('Press Enter to Restart', True, (255, 255, 255))
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(300, 300, 250, 50), 25)
-            screen.blit(text, (300, 300))
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(200, 350, 480, 50), 25)
-            screen.blit(text2, (200, 350))
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(250, 300, 300, 50), 25)
+            screen.blit(text, (250, 300))
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(150, 350, 500, 50), 25)
+            screen.blit(text2, (150, 350))

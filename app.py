@@ -30,13 +30,14 @@ def create_main_surface(state):
 def render_frame(state):
     state.render()
 
-def process_input(state, step):
+def process_input(state, step, lastP):
     bulletspread = [-20, 30]
     # Pause and unpause when p is pressed
     if state.is_key_down(K_p):
-        state.pause()
+       lastP = state.pause(lastP)
     
     # Move and shoot at the same time
+    
     elif state.is_key_down(K_LEFT) and state.is_key_down(K_SPACE):
         state.change_player_pos(-step, 0)
         state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
@@ -44,6 +45,10 @@ def process_input(state, step):
         state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
     elif state.is_key_down(K_RIGHT) and state.is_key_down(K_SPACE):
         state.change_player_pos(step, 0)
+        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    elif state.is_key_down(K_SPACE):
         state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
         state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
         state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
@@ -77,22 +82,13 @@ def process_input(state, step):
     # Pause and unpause when p is pressed
     elif state.is_key_down(K_p):
         state.pause()
-
-    #bullets
-    if state.is_key_down(K_SPACE):
-        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-    
-
     
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()
+    
+    return lastP
 
-    #if enter is pressed, the game will start
-    elif state.is_key_down(K_RETURN):
-        state.update_startbanner(False)
 
 def main():
     #pygame.mixer.music.play(loops = -1)
@@ -106,9 +102,13 @@ def main():
     game = state(screendim, startpos, Background("./images/highway.png", y), mine)
 
     clock = pygame.time.Clock()
-    start_time = pygame.time.get_ticks()
     speed = 5
-    pygame.key.set_repeat(speed -2)
+    lastP = 700
+
+    start_time = 0
+    time_elapsed = 0
+
+    pygame.key.set_repeat(round(speed) -2)
 
     while True:
         clock.tick(60)
@@ -119,13 +119,22 @@ def main():
         game.updateKeys()
         create_main_surface(game)
         for event in pygame.event.get(): 
-            process_input(game, 1)
+            lastP = process_input(game, 1, lastP)
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
-
-        time_elapsed = (pygame.time.get_ticks() - start_time)
+        if game.is_key_down(K_RETURN):
+            if game.get_startbanner():
+                game.update_startbanner(False)
+                start_time = pygame.time.get_ticks()
+                time_elapsed = 0
+                
+        lastP += 1
+        
+        if not game.get_startbanner():
+            time_elapsed = (pygame.time.get_ticks() - start_time)
+        
         time_elapsed_sec = time_elapsed / 1000
         speed = 5 + time_elapsed_sec / 10
         if speed > 20:
@@ -147,17 +156,17 @@ def main():
 
         if game.get_health() <= 0:
             #stop time and display score
-            time_elapsed = 0
 
-            game.pause()
+            game.pause2(True)
             game.update_endbanner(True)
             game.render_endbanner()
             pygame.display.flip()
 
             if game.is_key_down(K_RETURN):
+                start_time = pygame.time.get_ticks()
+                time_elapsed = 0
                 game.update_endbanner(False)
-                game.update_startbanner(True)
-                game.change_player_health(200)
+                game = state(screendim, startpos, Background("./images/highway.png", y), mine)
 
 if __name__ == '__main__':
     main()
