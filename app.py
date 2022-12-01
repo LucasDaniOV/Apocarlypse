@@ -15,12 +15,13 @@ pygame.init()
 minigun = sound_library(r"./sounds")
 
 
-def create_main_surface(state, time):
+def create_main_surface(state, timer):
     #create a new mine with a random x value and y value of 1 
     #has a 5% chance of spawning a mine
 
     if random.randint(1, 1000) <= 5:
-        state.create_mine(Mine(random.randint(120, 580), -100))
+        if timer > 0:
+            state.create_mine(Mine(random.randint(120, 580), -100))
 
     #create a new guy with a random x value and y value of 1
     #has a 20% chance of spawning a guy
@@ -106,6 +107,7 @@ def shoot(state):
     state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
     state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
 def main():
+    deathSoundPlayed = False
     # infinite loop bgm
     pygame.mixer.music.play(loops=-1)
     #pygame.mixer.music.play(loops = -1)
@@ -127,9 +129,12 @@ def main():
 
     pygame.key.set_repeat(round(speed) -2)
 
+    time_elapsed_sec = 0
+
     while True:
         clock.tick(60)
         game.updateKeys()
+        create_main_surface(game, time_elapsed_sec)
         for event in pygame.event.get(): 
             lastP = process_input(game, 1, lastP)
             if event.type == QUIT:
@@ -144,8 +149,6 @@ def main():
                 start_time = pygame.time.get_ticks()
                 time_elapsed = 0
                 
-        
-        
         if not game.get_startbanner():
             time_elapsed = (pygame.time.get_ticks() - start_time)
         
@@ -169,38 +172,30 @@ def main():
 
         game.update_score(time_elapsed / 30000)
 
-
         if game.get_health() <= 0:
-            #stop time and display score
-            selfdeath = sound_library(r"./sounds")
-            selfdeath.playsound("sfx/death")
-            pygame.mixer.music.stop()
+        
             game.pause2(True)
             game.update_endbanner(True)
             game.render_endbanner()
             pygame.display.flip()
+            pygame.mixer.music.play()
+
+            if not deathSoundPlayed:
+                #stop time and display score
+                selfdeath = sound_library(r"./sounds")
+                selfdeath.playsound("sfx/death")
+
+                pygame.mixer.music.stop()
+                deathSoundPlayed = True
 
             if game.is_key_down(K_RETURN):
                 start_time = pygame.time.get_ticks()
                 time_elapsed = 0
                 game.update_endbanner(False)
                 game = state(screendim, startpos, Background("./images/highway.png", y), mine)
-
-
-        if game.get_health() <= 0:
-            #stop time and display score
-
-            game.pause2(True)
-            game.update_endbanner(True)
-            game.render_endbanner()
-            pygame.display.flip()
-
-            if game.is_key_down(K_RETURN):
-                start_time = pygame.time.get_ticks()
-                time_elapsed = 0
-                game.update_endbanner(False)
-                game = state(screendim, startpos, Background("./images/highway.png", y), mine)
-        create_main_surface(game, time_elapsed_sec)
+                pygame.mixer.music.play(loops=-1)
+                deathSoundPlayed = False
+            # print(deathSoundPlayed)
 
 if __name__ == '__main__':
-    main()    
+    main()
