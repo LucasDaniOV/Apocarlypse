@@ -92,7 +92,7 @@ def process_input(state, step):
 
 
 def main():
-    pygame.mixer.music.play(loops = -1)
+    #pygame.mixer.music.play(loops = -1)
     # Create the state
     screendim = (800, 800)
     # is array to easily grab the x and y values
@@ -134,7 +134,7 @@ def main():
         game.update_background(speed)
         game.update_mine(0, speed)
         game.update_bullets(0, -50)
-        game.update_guys(0, speed + 5)
+        game.update_guys(0, speed)
 
         checkMines(game)
         checkBullets(game)

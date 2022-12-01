@@ -49,7 +49,8 @@ def checkGuys(game):
                 game.change_player_health(-10)
 
         if guy.get_health() <= 0 and not guy.get_dead():
-            game.kill_guy(guy)    
+            game.kill_guy(guy)
+                
         
         if touches(guy.get_rect(), game.get_bottomScreen()):
             game.remove_guy(guy)

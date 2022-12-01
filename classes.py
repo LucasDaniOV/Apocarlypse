@@ -139,7 +139,10 @@ class state:
     def update_guys(self, x, y):
         if self.__pause == False:
             for guy in self.__guys:
-                guy.change_pos(x, y)
+                if guy.get_dead():
+                    guy.change_pos(x, y)
+                else:
+                    guy.change_pos(x, y +5)
     
     def get_guys(self):
         return self.__guys
