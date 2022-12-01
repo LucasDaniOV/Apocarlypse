@@ -87,7 +87,7 @@ class sound_library:
 
         res = [e.replace("\\", "/") for e in res]
         res = list(filter(is_explosion, res))
-        print(res)
+        # print(res)
         random_index = random.randint(0, len(res)-1)
         
         sfx = pygame.mixer.Sound(res[random_index])
