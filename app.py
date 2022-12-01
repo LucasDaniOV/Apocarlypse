@@ -104,7 +104,7 @@ def main():
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
     speed = 5
-    pygame.key.set_repeat(3)
+    pygame.key.set_repeat(speed -2)
 
     while True:
         clock.tick(60)

@@ -142,7 +142,7 @@ class state:
                 if guy.get_dead():
                     guy.change_pos(x, y)
                 else:
-                    guy.change_pos(x, y +5)
+                    guy.change_pos(x, y + 3 + y - 5)
     
     def get_guys(self):
         return self.__guys
