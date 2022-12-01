@@ -98,7 +98,7 @@ def process_input(state, step, lastP):
         sys.exit()
 
     if state.is_key_down(K_SPACE):
-        minigun.playsound("sfx/bullet_sfx")
+        minigun.playsound("sfx/bullet")
     
     return lastP
 
