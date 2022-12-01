@@ -8,8 +8,8 @@ import random
 
 pygame.mixer.init()
 
-#pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
-#pygame.mixer.music.play()
+pygame.mixer.music.load('sounds/ost/gasgasgas.ogg')
+pygame.mixer.music.play()
 
 def is_explosion(filename):     # see line 76
     return "explosion" in filename

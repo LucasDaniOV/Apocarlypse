@@ -83,8 +83,7 @@ def process_input(state, step, lastP):
     
     # Pause and unpause when p is pressed
     elif state.is_key_down(K_p):
-        pygame.time.wait(800)
-        pygame.K_PAUSE()
+        state.pause()
     
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
@@ -107,10 +106,14 @@ def main():
     y = 0
     mine = Mine(300, 0)
     game = state(screendim, startpos, Background("./images/highway.png", y), mine)
+
     clock = pygame.time.Clock()
-    start_time = pygame.time.get_ticks()
     speed = 5
     lastP = 700
+
+    start_time = 0
+    time_elapsed = 0
+
     pygame.key.set_repeat(round(speed) -2)
 
     while True:
@@ -122,30 +125,67 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+
+        if game.is_key_down(K_RETURN):
+            if game.get_startbanner():
+                game.update_startbanner(False)
+                start_time = pygame.time.get_ticks()
+                time_elapsed = 0
+                
         lastP += 1
-        if game.get_health() <= 0:    
-            selfdeath = sound_library(r"./sounds")
-            selfdeath.playsound("sfx/death")
-            pygame.mixer.music.stop()
-            time.sleep(5)
-            pygame.quit()
-            sys.exit()
-        time_elapsed = (pygame.time.get_ticks() - start_time)
+        
+        if not game.get_startbanner():
+            time_elapsed = (pygame.time.get_ticks() - start_time)
+        
         time_elapsed_sec = time_elapsed / 1000
         speed = 5 + time_elapsed_sec / 10
         if speed > 20:
             speed = 20
         print(time_elapsed_sec)
-        game.update_background(speed)
-        game.update_mine(0, speed)
-        game.update_bullets(0, -50)
-        game.update_guys(0, speed)
+
+        if not game.get_startbanner():
+            game.update_background(speed)
+            game.update_mine(0, speed)
+            game.update_bullets(0, -50)
+            game.update_guys(0, speed)
 
         checkMines(game)
         checkBullets(game)
         checkGuys(game)
 
         game.update_score(time_elapsed / 30000)
+
+
+        if game.get_health() <= 0:
+            #stop time and display score
+            selfdeath = sound_library(r"./sounds")
+            selfdeath.playsound("sfx/death")
+            pygame.mixer.music.stop()
+            game.pause2(True)
+            game.update_endbanner(True)
+            game.render_endbanner()
+            pygame.display.flip()
+
+            if game.is_key_down(K_RETURN):
+                start_time = pygame.time.get_ticks()
+                time_elapsed = 0
+                game.update_endbanner(False)
+                game = state(screendim, startpos, Background("./images/highway.png", y), mine)
+
+
+        if game.get_health() <= 0:
+            #stop time and display score
+
+            game.pause2(True)
+            game.update_endbanner(True)
+            game.render_endbanner()
+            pygame.display.flip()
+
+            if game.is_key_down(K_RETURN):
+                start_time = pygame.time.get_ticks()
+                time_elapsed = 0
+                game.update_endbanner(False)
+                game = state(screendim, startpos, Background("./images/highway.png", y), mine)
 
 if __name__ == '__main__':
     main()

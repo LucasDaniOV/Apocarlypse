@@ -21,6 +21,8 @@ class state:
         self.__health = health()
         self.__guys = []
         self.__score = Score()
+        self.__startBanner = startBanner()
+        self.__endBanner = endBanner()
 
     def render(self):
         if self.__pause == False:
@@ -38,18 +40,18 @@ class state:
             self.__health.grey_render(self.__screen)
             self.__health.render(self.__screen)
             self.__score.render(self.__screen)
+            self.__startBanner.render(self.__screen)
             pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
             pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
             pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
-    def pause(self, lastP):
-        if lastP > 10:
-            self.__pause = not self.__pause
-            return 0
-        else:
-            return lastP
+    def pause(self):
+        self.__pause = not self.__pause
     
+    def pause2(self, x):
+        self.__pause = x
+
     def get_pause(self):
         return self.__pause
     
@@ -162,19 +164,27 @@ class state:
     def kill_guy(self, guy):
         guy.die()
 
+    def update_score(self, x):
+        self.__score.update_score(x)
 
+    def get_startbanner(self):
+        return self.__startBanner.get_status()
+
+    def update_startbanner(self, x):
+        self.__startBanner.update(x)
+
+    def get_endbanner(self):
+        return self.__endBanner.get_status()
+    
+    def update_endbanner(self, x):
+        self.__endBanner.update(x)
+    
+    def render_endbanner(self):
+        self.__endBanner.render(self.__screen)
 
 # ---------------------------------- #
 # Object classes
 # ---------------------------------- #
-
-
-
-
-
-
-    def update_score(self, x):
-        self.__score.update_score(x)
 
 class player:
     def __init__(self, x, y):
@@ -402,3 +412,40 @@ class Score:
 
     def update_score(self, x):
         self.__score += x
+
+class startBanner:
+    def __init__(self):
+        self.__status = True
+    
+    def update(self, status):
+        self.__status = status
+
+    def get_status(self):
+        return self.__status
+
+    def render(self, screen):
+        if self.__status == True:
+            font = pygame.font.SysFont('Arial', 50)
+            text = font.render('Press Enter to Start', True, (255, 255, 255))
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(175, 300, 450, 50), 25)
+            screen.blit(text, (175, 300))
+
+class endBanner:
+    def __init__(self):
+        self.__status = False
+
+    def update(self, status):
+        self.__status = status
+    
+    def get_status(self):
+        return self.__status
+    
+    def render(self, screen):
+        if self.__status == True:
+            font = pygame.font.SysFont('Arial', 50)
+            text = font.render('Game Over', True, (255, 255, 255))
+            text2 = font.render('Press Enter to Restart', True, (255, 255, 255))
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(250, 300, 300, 50), 25)
+            screen.blit(text, (250, 300))
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(150, 350, 500, 50), 25)
+            screen.blit(text2, (150, 350))
