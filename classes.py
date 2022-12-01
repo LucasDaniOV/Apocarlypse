@@ -45,9 +45,9 @@ class state:
             self.__health.render(self.__screen)
             self.__score.render(self.__screen)
             self.__startBanner.render(self.__screen)
-            pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
-            pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
-            pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
+            #pygame.draw.rect(self.__screen, (0, 255, 0), self.__bounds, 1) # border for debugging
+            #pygame.draw.rect(self.__screen, (0, 255, 255), self.__bottomScreen, 1) # border for debugging
+            #pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
     def pause(self, lastP):
@@ -233,7 +233,7 @@ class player:
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
-        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        #pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
         self.__image = pygame.transform.scale(self.__image, (80, 160))
     
     
@@ -291,7 +291,7 @@ class Mine:
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
         self.__image = pygame.transform.scale(self.__image, (50, 50))
-        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        #pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
 
     def get_rect(self):
         return self.__rect
@@ -384,7 +384,7 @@ class guy:
 
         self.__image = pygame.transform.scale(self.__image, (50, 50))
         screen.blit(self.__image, (self.__x, self.__y))
-        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        #pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
         
         if self.__health > 0:
             pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
@@ -478,7 +478,7 @@ class boss:
 
         self.__image = pygame.transform.scale(self.__image, (300, 300))
         screen.blit(self.__image, (self.__x, self.__y))
-        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        #pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
         
         if self.__health > 0:
             pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
@@ -519,6 +519,8 @@ class boss:
         self.__image = pygame.image.load('./images/bloodSplatter.png')
         self.__image = pygame.transform.scale(self.__image, (300, 300))
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)).inflate(100, 100)
+        death2 = sound_library(r"./sounds")
+        death2.playsound("sfx/SplashBig")
 
 
 class startBanner:
