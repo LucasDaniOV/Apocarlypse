@@ -12,6 +12,8 @@ import time
 # Initialize Pygame
 pygame.init()
 
+minigun = sound_library(r"./sounds")
+
 
 def create_main_surface(state):
     #create a new mine with a random x value and y value of 1 
@@ -66,12 +68,12 @@ def process_input(state, step):
         state.create_bullet(Bullet(state.get_player().get_x() + 47, state.get_player().get_y() + random.randint(-5, 10)))
         state.create_bullet(Bullet(state.get_player().get_x() + 54, state.get_player().get_y() + random.randint(-10, 5)))
     
-
-    
     elif state.is_key_down(K_ESCAPE):
         pygame.quit()
         sys.exit()
 
+    if state.is_key_down(K_SPACE):
+        minigun.playsound("sfx/bullet_sfx")
 
 def main():
     # infinite loop bgm
@@ -100,6 +102,8 @@ def main():
                 sys.exit()
 
         if game.get_health() <= 0:    
+            expl1 = sound_library(r"./sounds")
+            expl1.play_random_explosion()
             time.sleep(5)
             pygame.quit()
             sys.exit()
