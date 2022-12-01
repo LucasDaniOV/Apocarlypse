@@ -35,7 +35,7 @@ def render_frame(state):
     state.render()
 
 def process_input(state, step, lastP):
-    bulletspread = [-20, 30]
+    
     # Pause and unpause when p is pressed
     if state.is_key_down(K_p):
        lastP = state.pause(lastP)
@@ -44,18 +44,19 @@ def process_input(state, step, lastP):
     
     elif state.is_key_down(K_LEFT) and state.is_key_down(K_SPACE):
         state.change_player_pos(-step, 0)
-        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        shoot(state)
     elif state.is_key_down(K_RIGHT) and state.is_key_down(K_SPACE):
         state.change_player_pos(step, 0)
-        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        shoot(state)
+    elif state.is_key_down(K_UP) and state.is_key_down(K_SPACE):
+        state.change_player_pos(0, -step)
+        shoot(state)
+    elif state.is_key_down(K_DOWN) and state.is_key_down(K_SPACE):
+        state.change_player_pos(0, step)
+        shoot(state)
+    
     elif state.is_key_down(K_SPACE):
-        state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
-        state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+        shoot(state)
     
     # Don't move if opposite keys are pressed
     elif state.is_key_down(K_LEFT) and state.is_key_down(K_RIGHT):
@@ -96,6 +97,11 @@ def process_input(state, step, lastP):
     
     return lastP
 
+def shoot(state):
+    bulletspread = [-20, 30]
+    state.create_bullet(bullet(state.get_player().get_x() + 33, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    state.create_bullet(bullet(state.get_player().get_x() + 40, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
+    state.create_bullet(bullet(state.get_player().get_x() + 46, state.get_player().get_y() + random.randint(bulletspread[0], bulletspread[1])))
 def main():
     deathSoundPlayed = False
     # infinite loop bgm
@@ -130,15 +136,15 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
+        if lastP < 11:
+            lastP += 1
+    
         if game.is_key_down(K_RETURN):
             if game.get_startbanner():
                 game.update_startbanner(False)
                 start_time = pygame.time.get_ticks()
                 time_elapsed = 0
                 
-        lastP += 1
-        
         if not game.get_startbanner():
             time_elapsed = (pygame.time.get_ticks() - start_time)
         
@@ -153,10 +159,12 @@ def main():
             game.update_mine(0, speed)
             game.update_bullets(0, -50)
             game.update_guys(0, speed)
+        game.update_bosses(0, speed/8)
 
         checkMines(game)
         checkBullets(game)
         checkGuys(game)
+        checkBosses(game)
 
         game.update_score(time_elapsed / 30000)
 
@@ -166,6 +174,7 @@ def main():
             game.update_endbanner(True)
             game.render_endbanner()
             pygame.display.flip()
+            pygame.mixer.music.play()
 
             if not deathSoundPlayed:
                 #stop time and display score
@@ -183,7 +192,6 @@ def main():
                 pygame.mixer.music.play(loops=-1)
                 deathSoundPlayed = False
             # print(deathSoundPlayed)
-            
 
 if __name__ == '__main__':
-    main()  
+    main()

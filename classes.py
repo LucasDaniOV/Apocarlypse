@@ -21,6 +21,7 @@ class state:
         self.__health = health()
         self.__guys = []
         self.__score = Score()
+        self.bosses = []
         self.__startBanner = startBanner()
         self.__endBanner = endBanner()
 
@@ -35,6 +36,9 @@ class state:
             
             for guy in self.__guys:
                 guy.render(self.__screen)
+            
+            for boss in self.bosses:
+                boss.render(self.__screen)
 
             self.__player.render(self.__screen)
             self.__health.grey_render(self.__screen)
@@ -46,8 +50,12 @@ class state:
             pygame.draw.rect(self.__screen, (255, 0, 255), self.__topScreen, 1) # border for debugging
             pygame.display.flip()
 
-    def pause(self):
-        self.__pause = not self.__pause
+    def pause(self, lastP):
+        if lastP > 10:
+            self.__pause = not self.__pause
+            return 0
+        else:
+            return lastP
     
     def pause2(self, x):
         self.__pause = x
@@ -164,6 +172,26 @@ class state:
     def kill_guy(self, guy):
         guy.die()
 
+    def create_boss(self, boss):
+        if self.__pause == False:
+            self.bosses.append(boss)
+    
+    def update_bosses(self, x, y):
+        if self.__pause == False:
+            for boss in self.bosses:
+                if boss.get_dead():
+                    boss.change_pos(x, y*8)
+                else:
+                    boss.change_pos(x, y)
+    
+    def get_bosses(self):
+        return self.bosses
+    
+    def remove_boss(self, boss):
+        self.bosses.remove(boss)
+    
+    def change_boss_health(self, boss, x):
+        boss.change_health(x)
     def update_score(self, x):
         self.__score.update_score(x)
 
@@ -176,9 +204,15 @@ class state:
     def get_endbanner(self):
         return self.__endBanner.get_status()
     
+    def kill_boss(self, boss):
+        boss.die()
     def update_endbanner(self, x):
         self.__endBanner.update(x)
     
+
+
+
+
     def render_endbanner(self):
         self.__endBanner.render(self.__screen)
 
@@ -338,13 +372,13 @@ class guy:
         self.__image = pygame.transform.rotate(self.__image, 180)
         self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
         self.__health = 100
-        self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
-        self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+        self.__healthRect = pygame.Rect(self.__x + 15, self.__y-10, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 15, self.__y-10, 20, 5)
         self.__dead = False
 
     def render(self, screen):
-        self.__healthRect = pygame.Rect(self.__x + 10, self.__y, self.__health/5, 5)
-        self.__healthBar = pygame.Rect(self.__x + 10, self.__y, 20, 5)
+        self.__healthRect = pygame.Rect(self.__x + 15, self.__y-10, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 15, self.__y-10, 20, 5)
 
         self.__image = pygame.transform.scale(self.__image, (50, 50))
         screen.blit(self.__image, (self.__x, self.__y))
@@ -412,6 +446,67 @@ class Score:
 
     def update_score(self, x):
         self.__score += x
+
+class boss:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
+        self.__image = pygame.image.load('./images/boss.png')
+        self.__image = pygame.transform.scale(self.__image, (300, 300))
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)).inflate(-80, -80)
+        self.__health = 1000
+        self.__healthRect = pygame.Rect(self.__x + 50, self.__y, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 50, self.__y, 200, 5)
+        self.__dead = False
+
+    def render(self, screen):
+        self.__healthRect = pygame.Rect(self.__x + 50, self.__y, self.__health/5, 5)
+        self.__healthBar = pygame.Rect(self.__x + 50, self.__y, 200, 5)
+
+        self.__image = pygame.transform.scale(self.__image, (300, 300))
+        screen.blit(self.__image, (self.__x, self.__y))
+        pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
+        
+        if self.__health > 0:
+            pygame.draw.rect(screen, (100, 100, 100), self.__healthBar, 25)
+        
+        if self.__health > 500:
+            pygame.draw.rect(screen, (0, 255, 0), self.__healthRect, 25)
+        elif self.__health <= 500 and self.__health > 250:
+            pygame.draw.rect(screen, (255, 255, 0), self.__healthRect, 25)
+        elif self.__health <= 250:
+            pygame.draw.rect(screen, (255, 0, 0), self.__healthRect, 25)
+         
+    def change_pos(self, x, y):
+        self.__x += x
+        self.__y += y
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)).inflate(-80, -80)
+
+    def change_health(self, x):
+        self.__health += x
+    
+    def get_health(self):
+        return self.__health
+
+    def get_x(self):
+        return self.__x
+    
+    def get_y(self):
+        return self.__y
+    
+    def get_dead(self):
+        return self.__dead
+
+    def get_rect(self):
+        return self.__rect
+    
+    def die(self):
+        self.__health = 0
+        self.__dead = True
+        self.__image = pygame.image.load('./images/bloodSplatter.png')
+        self.__image = pygame.transform.scale(self.__image, (300, 300))
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)).inflate(100, 100)
+
 
 class startBanner:
     def __init__(self):
