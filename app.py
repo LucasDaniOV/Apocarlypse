@@ -133,11 +133,12 @@ def main():
         print(time_elapsed_sec)
         game.update_background(speed)
         game.update_mine(0, speed)
-        game.update_bullets(0, -10)
+        game.update_bullets(0, -50)
         game.update_guys(0, speed)
 
         checkMines(game)
         checkBullets(game)
+        checkGuys(game)
 
         game.update_score(time_elapsed / 10000)
 
