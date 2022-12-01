@@ -27,7 +27,7 @@ def create_main_surface(state, time):
 
     #create a new boss with a random x value and y value of 1
     #has a 5% chance of spawning a boss
-    if time > 3 and random.randint(1, 100) <= 5 and state.get_bosses() == []:
+    if time > 20 and random.randint(1, 500) <= 5 and state.get_bosses() == []:
         state.create_boss(boss(random.randint(150, 400), -100))
     
     render_frame(state)
