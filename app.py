@@ -60,7 +60,8 @@ def process_input(state, step):
     
     # Pause and unpause when p is pressed
     elif state.is_key_down(K_p):
-        state.pause()
+        pygame.time.wait(800)
+        pygame.K_PAUSE()
 
     #bullets
     elif state.is_key_down(K_SPACE):
@@ -104,6 +105,7 @@ def main():
         if game.get_health() <= 0:    
             expl1 = sound_library(r"./sounds")
             expl1.play_random_explosion()
+            pygame.mixer.music.stop()
             time.sleep(5)
             pygame.quit()
             sys.exit()
