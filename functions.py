@@ -63,3 +63,28 @@ def checkBullets(state):
     for bullet in bullets:
         if touches(bullet.get_rect(), state.get_topScreen()):
             state.remove_bullet(bullet)
+
+
+def checkBosses(game):
+    bosses = game.get_bosses()
+    player = game.get_player()
+    bullets = game.get_bullets()
+    for boss in bosses:
+        for bullet in bullets:
+            if touches(bullet.get_rect(), boss.get_rect()):
+                if boss.get_health() > 0:
+                    game.change_boss_health(boss, -10)
+                    game.remove_bullet(bullet)
+        if touches(player.get_rect(), boss.get_rect()) and not boss.get_dead():
+            if boss.get_health() > 0:
+                game.kill_boss(boss)
+                game.change_player_health(-100)
+
+        if boss.get_health() <= 0 and not boss.get_dead():
+            game.kill_boss(boss)
+                
+        
+        if touches(boss.get_rect(), game.get_bottomScreen().move(0, 300)):
+            game.remove_boss(boss)
+
+
