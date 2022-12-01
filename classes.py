@@ -400,3 +400,4 @@ class Score:
 
     def update_score(self, x):
         self.__score += x
+
