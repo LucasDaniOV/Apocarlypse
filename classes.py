@@ -285,12 +285,13 @@ class Mine:
         self.__y = y
         self.__image = pygame.image.load('./images/mine.png')
         self.__image = pygame.transform.scale(self.__image, (100, 100))
-        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y))
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)).inflate(-20, -20)
         self.__exploded = False
 
     def render(self, screen):
         screen.blit(self.__image, (self.__x, self.__y))
         self.__image = pygame.transform.scale(self.__image, (50, 50))
+        self.__rect = self.__image.get_rect(topleft=(self.__x, self.__y)).inflate(-20, -20)
         #pygame.draw.rect(screen, (255, 0, 0), self.__rect, 1) # for debugging, remove later
 
     def get_rect(self):
